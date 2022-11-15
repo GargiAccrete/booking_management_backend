@@ -4,6 +4,9 @@ const cors = require('cors');
 const validateHeaders = require('./middlewares/validateHeaders.middleware');
 const errorHandler = require('./middlewares/error.middleware');
 const authRoutes = require('./routes/auth.route');
+const dashboardRoutes = require('./routes/dashboard.route');
+const loginRoutes = require('./routes/login.route');
+const registerRoutes=require('./routes/register.route');
 const categoryRoutes = require('./routes/categories.route');
 const httpError = require('./utils/httpError.util');
 const { errorMessages, statusCodes } = require('./config/const.config');
@@ -32,7 +35,7 @@ app.use(validateHeaders);
 // Application routes
 app.use('/auth', authRoutes);
 app.use('/categories', categoryRoutes);
-app.use('/dashboard', dashboardRoutes );
+// app.use('/dashboard', dashboardRoutes );
 app.use('/login', loginRoutes);
 app.use('/register', registerRoutes);
 

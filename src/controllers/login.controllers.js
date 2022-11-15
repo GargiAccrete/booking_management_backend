@@ -9,7 +9,7 @@ const credentials = {
   contact:"8888888888"
 }
 
-exports.login = (req,res) =>{
+const login = (req,res) =>{
   if(req.body.name == credentials.name && req.body.contact == credentials.contact){
       res.redirect('/')
       // res.end("Login Successful")

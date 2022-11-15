@@ -20,7 +20,7 @@ const login = async (data) => {
 		connection.query('SELECT * FROM userdata WHERE name = ? AND contact = ?', [name, contact], function(error, results, fields) {
 			
 			if (error) throw error;
-			
+		
 			if (results > 0) {
 				response.redirect('/home');
 			} else {
