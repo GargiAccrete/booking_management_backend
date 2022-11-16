@@ -5,10 +5,10 @@ const registerController = require('../controllers/register.controller')
 const router = express.Router();
 
 // router.get('/', [], registerController.list);
+router.get('/user_list',[],registerController.list);
 router.post('/insert', [], registerController.create);
-// router.get('/:id/view', [], registerController.viewById);
-// router.put('/:id/update', [], registerController.update);
-// router.delete('/:id/delete', [], registerController.deleteById);
-// console.log('hello 2');
+router.get('list/:id', [], registerController.viewById);
+router.put('list/:id/update', [], registerController.update);
+router.delete('/:id/delete', [], registerController.deleteById);
 
 module.exports = router;

@@ -30,7 +30,7 @@ app.use(express.json());
 app.use(cors());
 app.options('*', cors());
 
-app.use(validateHeaders);
+// app.use(validateHeaders);
 
 // Application routes
 app.use('/auth', authRoutes);
@@ -41,60 +41,59 @@ app.use('/register', registerRoutes);
 
 
 // File upload
-app.post("/upload/:directory/:field", (req, res) => {
-  const params = req.params;
-  const { directory, field } = params;
-  const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, 'uploads/'+directory+'/')
-    },
-    filename: function (req, file, cb) {
-      cb(null, Date.now() + Math.floor(Math.random() * 9999) + path.extname(file.originalname));
-    }
-  });
-  const upload = multer({ storage: storage }).single(field);
-  upload(req, res, (err) => {
-    if(err) {
-      res.status(400).send({error: true, message: err});
-    }    
-    req.file.filename = '/'+directory+'/'+req.file.filename;
-    res.send({data: req.file, success: true});
-  });
-});
+// app.post("/upload/:directory/:field", (req, res) => {
+//   const params = req.params;
+//   const { directory, field } = params;
+//   const storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//       cb(null, 'uploads/'+directory+'/')
+//     },
+//     filename: function (req, file, cb) {
+//       cb(null, Date.now() + Math.floor(Math.random() * 9999) + path.extname(file.originalname));
+//     }
+//   });
+//   const upload = multer({ storage: storage }).single(field);
+//   upload(req, res, (err) => {
+//     if(err) {
+//       res.status(400).send({error: true, message: err});
+//     }    
+//     req.file.filename = '/'+directory+'/'+req.file.filename;
+//     res.send({data: req.file, success: true});
+//   });
+// });
 
-app.post("/multiupload/:directory/:field", (req, res) => {
-  const params = req.params;
-  const { directory, field } = params;
-  const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, 'uploads/'+directory+'/')
-    },
-    filename: function (req, file, cb) {
-      cb(null, Date.now() + Math.floor(Math.random() * 9999) + path.extname(file.originalname));
-    }
-  });
-  const upload = multer({ storage: storage }).array(field);
-  upload(req, res, (err) => {
-    if(err) {
-      res.status(400).send({error: true, message: err});
-    }
-    for (let i = 0; i < (req.files).length; i++) {
-      //console.log(req.files[i]);
-      req.files[i].filename = '/'+directory+'/'+req.files[i].filename;
-    }
-    res.send({data: req.files, success: true});
-  });
-});
+// app.post("/multiupload/:directory/:field", (req, res) => {
+//   const params = req.params;
+//   const { directory, field } = params;
+//   const storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//       cb(null, 'uploads/'+directory+'/')
+//     },
+//     filename: function (req, file, cb) {
+//       cb(null, Date.now() + Math.floor(Math.random() * 9999) + path.extname(file.originalname));
+//     }
+//   });
+//   const upload = multer({ storage: storage }).array(field);
+//   upload(req, res, (err) => {
+//     if(err) {
+//       res.status(400).send({error: true, message: err});
+//     }
+//     for (let i = 0; i < (req.files).length; i++) {
+//       //console.log(req.files[i]);
+//       req.files[i].filename = '/'+directory+'/'+req.files[i].filename;
+//     }
+//     res.send({data: req.files, success: true});
+//   });
+// });
 
 // Handle 404 requests
-app.all('*', (req, res, next) => {
-  //console.log(req.route);
-  next(httpError(errorMessages.NOT_FOUND, statusCodes.NOT_FOUND));
-});
+// app.all('*', (req, res, next) => {
+//   //console.log(req.route);
+//   next(httpError(errorMessages.NOT_FOUND, statusCodes.NOT_FOUND));
+// });
 
 // Error handler middleware
-app.use(errorHandler);
-
+// app.use(errorHandler);
 // Run the application
 app.listen(port, () => {
   // eslint-disable-next-line no-console
