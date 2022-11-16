@@ -30,7 +30,7 @@ app.use(express.json());
 app.use(cors());
 app.options('*', cors());
 
-app.use(validateHeaders);
+// app.use(validateHeaders);
 
 // Application routes
 app.use('/auth', authRoutes);
@@ -38,6 +38,11 @@ app.use('/categories', categoryRoutes);
 // app.use('/dashboard', dashboardRoutes );
 app.use('/login', loginRoutes);
 app.use('/register', registerRoutes);
+// app.use('/register', registerRoutes);
+app.use(function(req, res, next) {
+  res.setHeader("Content-Type", "application/json");
+  next();
+});
 
 
 // File upload
