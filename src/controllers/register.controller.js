@@ -3,24 +3,21 @@ const { getLoggedInUser, getTokenData } = require('../utils/jwtToken.util');
 const { statusCodes, requestHeaders } = require('../config/const.config');
 const registerService = require('../services/register.service');
 
-
-const list = async (req, res, next) => { 
-  let result 
+const list = async (req, res, next) => {
     try {
-        const { body } = req;
-      result =  await registerService.getList(body);
+      console.log("insidelist")
+        const { body} = req;
+       
+        const result = await registerService.getList(body);
     
         if (result.error) {
-          // next(httpError(result.message, result.status));
+          next(httpError(result.message, result.status));
         } else {
-          res.json({ success: true, data: result.data, totalRows: result.totalRows, currentPage: result.currentPage, totalPages: result.totalPages });
+          res.json({ success: true, data: result.data});
         }
       } catch (e) {
-        console.log(e)
-
-        // next(httpError(e.message, statusCodes.SERVER_ERROR));
+        next(httpError(e.message, statusCodes.SERVER_ERROR));
       }
-      res.json({ success: true, data: result.data, totalRows: result.totalRows, currentPage: result.currentPage, totalPages: result.totalPages });
 };
 
 const create = async (req, res, next) => {
@@ -77,9 +74,9 @@ const deleteById = async (req, res, next) => {
     try {
        
         const { body, params } = req;
-      
+      console.log("params",req)
         const result = await registerService.deleteById(body, params,);
-    
+    console.log("result",result)
         if (result.error) {
           next(httpError(result.message, result.status));
         } else {
@@ -95,6 +92,6 @@ module.exports = {
   list,
   create,
   viewById,
-  update,
-  deleteById
+  // update,
+  deleteById,
 };

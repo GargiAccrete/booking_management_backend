@@ -38,6 +38,11 @@ app.use('/categories', categoryRoutes);
 // app.use('/dashboard', dashboardRoutes );
 app.use('/login', loginRoutes);
 app.use('/register', registerRoutes);
+// app.use('/register', registerRoutes);
+app.use(function(req, res, next) {
+  res.setHeader("Content-Type", "application/json");
+  next();
+});
 
 
 // File upload

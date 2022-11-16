@@ -129,6 +129,7 @@ module.exports = {
   create,
   viewById,
   update,
+  // update,
   deleteById,
   // checkCategoryByName,
 };

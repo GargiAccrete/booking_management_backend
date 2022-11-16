@@ -2,30 +2,42 @@ const { statusCodes, dataStatusText, dataStatusValue, errorMessages, pageConfig,
 const { convertTimestampToDate, getCurrentTimestamp } = require('../utils/date.util');
 const registreModel = require('../models/register.model')
 
-
-const getList = async (data, params) => {
+const getList = async (data, info) => {
   const result = {
     error: false,
     data: {},
+    // totalRows: '',
+    // currentPage: '',
+    // totalPages: '',
   };
-
+  // const id = Number(info.queryData.id) || 0;  
+  // const page = (info.queryData && info.queryData.page) ? info.queryData.page : "";
   try {
-    const qData = await registreModel.fetchAll();
+    console.log("inside service")
+    const qData = await registreModel.fetchAll( info);
 
     result.data = [];
     qData.data.forEach((data) => {
       result.data.push({
-    
+        id: data.id,
+       business_area:data.business_area_1,
+       contact_no:data.contact_no,
+       city:data.city,
+       state:data.state,
+        legal_name: data.legal_name,
         status: dataStatusText[data.status] || dataStatusText.NA,
         created: convertTimestampToDate(data.created_at)
       });
     });
-    
+    // result["totalRows"] = Number(qData.totalRows);
+    // result["currentPage"] = Number(page);
+    // result["totalPages"] = Number(Math.ceil(Number(qData.totalRows)/pageConfig.PROPERTY));
   } catch (e) {
     result.error = true;
     result.status = statusCodes.SERVER_ERROR;
     result.message = e.message;
   }
+
   return result;
 };
 
@@ -64,7 +76,7 @@ const create = async (data, params) => {
   return result;
 };
 
-const viewById = async (data, params) => {
+const viewById = async (data, params, info) => {
   const result = {
     error: false,
     data: {},
@@ -145,11 +157,11 @@ const deleteById = async (data, params) => {
 
   // Save data
   try {
-    const qData = await categoryModel.viewById(id, info);
+    const qData = await registreModel.viewById(id);
     if (qData) {
-      const saveData = await categoryModel.deleteById(id, {
+      const saveData = await registreModel.deleteById(id, {
         modified_at: getCurrentTimestamp(),
-        modified_by: userId,
+        modified_by: id,
       });
       result.data = saveData;
     } else {
@@ -167,9 +179,17 @@ const deleteById = async (data, params) => {
 };
 
 module.exports = {
+<<<<<<< HEAD
   getList,
   create,
   viewById,
   update,
  deleteById,
+=======
+   getList,
+  create,
+ viewById,
+  // update,
+   deleteById,
+>>>>>>> 97dfbab997076a22dcc8eb07c97d8e4d3da5032b
 };
