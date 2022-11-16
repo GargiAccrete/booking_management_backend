@@ -179,17 +179,9 @@ const deleteById = async (data, params) => {
 };
 
 module.exports = {
-<<<<<<< HEAD
-  getList,
-  create,
-  viewById,
-  update,
- deleteById,
-=======
    getList,
   create,
  viewById,
   // update,
    deleteById,
->>>>>>> 97dfbab997076a22dcc8eb07c97d8e4d3da5032b
 };
