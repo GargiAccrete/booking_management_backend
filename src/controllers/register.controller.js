@@ -5,7 +5,7 @@ const registerService = require('../services/register.service');
 
 const list = async (req, res, next) => {
     try {
-      console.log("insidelist")
+     
         const { body} = req;
        
         const result = await registerService.getList(body);
@@ -22,9 +22,9 @@ const list = async (req, res, next) => {
 
 const create = async (req, res, next) => {
   try {
-    const { body} = req;
+    const { body,params} = req;
   const result = await registerService.create(body, params);
-    console.log('controller',result);
+    
     if (result.error) {
       next(httpError(result.message, result.status));
     } else {
@@ -52,7 +52,6 @@ const viewById = async (req, res, next) => {
       }
     
 };
-
 const update = async (req, res, next) => {
     try {
         const { body, params } = req;
@@ -60,12 +59,15 @@ const update = async (req, res, next) => {
         const result = await registerService.update(body, params);
     
         if (result.error) {
-          next(httpError(result.message, result.status));
+          res.json({error:true})
+          // next(httpError(result.message, result.status));
         } else {
           res.json({ success: true });
         }
       } catch (e) {
-        next(httpError(e.message, statusCodes.SERVER_ERROR));
+        
+        res.json({error:true})
+        // next(httpError(e.message, statusCodes.SERVER_ERROR));
       }
     
 };
@@ -74,9 +76,9 @@ const deleteById = async (req, res, next) => {
     try {
        
         const { body, params } = req;
-      console.log("params",req)
-        const result = await registerService.deleteById(body, params,);
-    console.log("result",result)
+     
+        const result = await registerService.deleteById(body, params);
+ 
         if (result.error) {
           next(httpError(result.message, result.status));
         } else {
@@ -92,6 +94,6 @@ module.exports = {
   list,
   create,
   viewById,
-  // update,
-  deleteById,
+  update,
+  deleteById
 };
