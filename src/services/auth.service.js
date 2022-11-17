@@ -8,7 +8,6 @@ const crypto = require("crypto");
 const { getCurrentTimestamp } = require('../utils/date.util');
 const {sendEmail}  = require ('../utils/Email.util');
 
-
 const loginUser = async (data) => {
   const result = {
     error: false,
@@ -23,6 +22,33 @@ const loginUser = async (data) => {
     result.message = `${errorMessages.BAD_REQUEST} ${validationError}`;
     return result;
   }
+
+
+//   try{
+//     const qData = await userModel.checkbyName(data.name);
+//     if (qData){
+//       const validName = await (data.name,qData.name);
+//       if(validName){
+//         const displayName = `${qData.name} ${qData.contact}`;
+//         result.data.displayName = displayName;
+//       }else {
+//         result.error = true;
+//         result.status = statusCodes.BAD_REQUEST;
+//         result.message = 'Invalid credentials.';
+//       }  
+//     } else {
+//       result.error = true;
+//       result.status = statusCodes.BAD_REQUEST;
+//       result.message = 'Invalid credentials.';
+//     }
+//   } catch (e) {
+//     result.error = true;
+//     result.status = statusCodes.SERVER_ERROR;
+//     result.message = e.message;
+//   }
+
+//   return result;
+// };
 
   // Check if user exists
   try {

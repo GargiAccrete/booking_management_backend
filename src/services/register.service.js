@@ -29,7 +29,6 @@ const getList = async (data, info) => {
     result.status = statusCodes.SERVER_ERROR;
     result.message = e.message;
   }
-
   return result;
 };
 
@@ -39,6 +38,13 @@ const create = async (data, params) => {
     error: false,
     data: {},
   };
+  const validationError = validateRegister(data);
+  if (validationError) {
+    result.error = true;
+    result.status = statusCodes.BAD_REQUEST;
+    result.message = `${errorMessages.BAD_REQUEST} ${validationError}`;
+    return result;
+  }
 
   try {
     const qData = await registerModel.create({
@@ -91,7 +97,6 @@ const viewById = async (data, params, info) => {
     result.status = statusCodes.SERVER_ERROR;
     result.message = e.message;
   }
-
   return result;
 };
 
@@ -101,14 +106,14 @@ const update = async (data, params) => {
     data: {},
   };
   const id = Number(params.id) || 0;
-  // Validate request
-  // const validationError = validateCategoryUpdate(data);
-  // if (validationError) {
-  //   result.error = true;
-  //   result.status = statusCodes.BAD_REQUEST;
-  //   result.message = `${errorMessages.BAD_REQUEST} ${validationError}`;
-  //   return result;
-  // }
+  //Validate request
+  const validationError = validateRegisterUpdate(data);
+  if (validationError) {
+    result.error = true;
+    result.status = statusCodes.BAD_REQUEST;
+    result.message = `${errorMessages.BAD_REQUEST} ${validationError}`;
+    return result;
+  }
 
   //   // Save data
   try {
@@ -116,16 +121,16 @@ const update = async (data, params) => {
     if (qData) {
 
       const saveData = await registerModel.update(id, {
-        business_type:data.business_type ||  'ssss',
-        legal_name:data.legal_name || 'ssss',
-        brand_associate:data.brand_associate || false,
-        address_line_1:data.address_line_1 || 'ccccccccccc',
-        address_line_2:data.address_line_2 || 'cccccccccc',
-        city:data.city || 'ccccccc',
-        state:data.state || 'ddddddddddddd',
-        pincode:data.pincode || 123456,
-        business_area:data.business_area || 'xxxxxxxx',
-        contact_no:data.contact_no || 1234543212,
+        business_type: data.business_type,
+        legal_name: data.legal_name,
+        brand_associate: data.brand_associate,
+        address_line_1: data.address_line_1,
+        address_line_2: data.address_line_2,
+        city: data.city,
+        state: data.state,
+        pincode: data.pincode,
+        business_area: data.business_area,
+        contact_no: data.contact_no,
         modified_at: getCurrentTimestamp(),
         modified_by: 0,
       });
@@ -143,10 +148,6 @@ const update = async (data, params) => {
 
   return result;
 };
-
-
-
-
 
 const deleteById = async (data, params) => {
   const result = {
@@ -174,7 +175,6 @@ const deleteById = async (data, params) => {
     result.status = statusCodes.SERVER_ERROR;
     result.message = e.message;
   }
-
   return result;
 };
 

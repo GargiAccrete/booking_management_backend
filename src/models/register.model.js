@@ -4,17 +4,18 @@ const { dataStatusValue, pageConfig, user_type, statusCodes } = require('../conf
 const tableName = 'restaurant';
 
 const fetchAll = async (data) => {
-  const query = `SELECT * FROM ${tableName}`
+  const query = `SELECT * FROM ${tableName}
+  WHERE status != ?`
   const qData = {
     data: [],
     totalRows: '',
   };
 
-  const resultData = await dbConnection.query(query);
-  qData["data"] = resultData || [];
+  const countParams = [dataStatusValue.DELETED];
+  const resultData = await dbConnection.query(query,countParams);
+  qData['data'] = resultData || [];
   return qData;
 };
-
 
 const create = async (data) => {
   const query = `INSERT INTO ${tableName} 
@@ -47,13 +48,13 @@ const create = async (data) => {
     data.pincode,
     data.business_area,
     data.contact_no,
-    data.status,
+    data.dataStatusValue.DELETED,
     data.created_at,
     data.created_by,
     data.modified_at,
     data.modified_by,
   ];
-
+ 
   const qData = await dbConnection.query(query, params);
   return qData.insertId || null;
 };
@@ -99,6 +100,7 @@ const update = async (id, data) => {
       id,
       dataStatusValue.DELETED
     ];
+    
     const qData = await dbConnection.query(query, params);
     return qData.affectedRows || null;
 };
@@ -106,11 +108,9 @@ const update = async (id, data) => {
 const deleteById = async (id, data) => {
   const query = `UPDATE ${tableName} SET status = ?, modified_at = ?, modified_by = ? WHERE id = ?`;
   const params = [dataStatusValue.DELETED, data.modified_at, data.modified_by, id];
-
   const qData = await dbConnection.query(query, params);
   return qData.affectedRows || null;
 };
-
 
 module.exports = {
   fetchAll,
@@ -119,5 +119,4 @@ module.exports = {
   update,
   update,
   deleteById
-  
 };

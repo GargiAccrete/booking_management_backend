@@ -73,12 +73,12 @@ const update = async (req, res, next) => {
 };
 
 const deleteById = async (req, res, next) => {
-    try {
-       
-        const { body, params } = req;
-     
-        const result = await registerService.deleteById(body, params);
- 
+  try {
+    
+    const { body, params } = req;
+    
+    const result = await registerService.deleteById(body, params);
+
         if (result.error) {
           next(httpError(result.message, result.status));
         } else {
