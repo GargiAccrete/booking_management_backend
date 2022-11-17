@@ -3,7 +3,7 @@ const Joi = require('joi');
 const validateUserlogin = (data) => {
   const schema = Joi.object({
     name:Joi.string().alphanum().min(3).max(30).required(),
-    contact:joi.string().length(10).pattern(/^[0-9]+$/).required(),
+    contact:Joi.string().length(10).pattern(/^[0-9]+$/).required(),
   });
 
   const { error } = schema.validate(data);
