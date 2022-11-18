@@ -1,7 +1,24 @@
 const httpError = require('../utils/httpError.util');
-const { getLoggedInUser, getTokenData } = require('../utils/jwtToken.util');
 const { statusCodes, requestHeaders } = require('../config/const.config');
 const registerService = require('../services/register.service');
+
+
+const listMapData = async (req, res, next) => {
+  try {
+   
+      const { body} = req;
+      const result = await registerService.getListMapData(body);
+  
+      if (result.error) {
+        next(httpError(result.message, result.status));
+      } else {
+        res.json({ success: true, data: result.data});
+      }
+    } catch (e) {
+      next(httpError(e.message, statusCodes.SERVER_ERROR));
+    }
+};
+
 
 const list = async (req, res, next) => {
     try {
@@ -90,7 +107,12 @@ const deleteById = async (req, res, next) => {
   
 };
 
+
+
+
 module.exports = {
+
+  listMapData,
   list,
   create,
   viewById,

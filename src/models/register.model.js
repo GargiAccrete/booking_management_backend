@@ -3,8 +3,23 @@ const { dataStatusValue, pageConfig, user_type, statusCodes } = require('../conf
 
 const tableName = 'restaurant';
 
+const fetchAllMapdata = async (data) => {
+  const query = `SELECT * FROM state_master
+  INNER JOIN cities
+  ON state_id = cities.state_id ;`
+  const qData = {
+    data: [],
+    totalRows: '',
+  };
+
+  const countParams = [dataStatusValue.DELETED];
+  const resultData = await dbConnection.query(query,countParams);
+  qData['data'] = resultData || [];
+  return qData;
+};
+
 const fetchAll = async (data) => {
-  const query = `SELECT * FROM ${tableName}
+  const query = `SELECT * FROM ${tableName} 
   WHERE status != ?`
   const qData = {
     data: [],
@@ -113,6 +128,7 @@ const deleteById = async (id, data) => {
 };
 
 module.exports = {
+  fetchAllMapdata,
   fetchAll,
   create,
   viewById,

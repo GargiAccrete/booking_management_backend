@@ -4,9 +4,10 @@ const cors = require('cors');
 const validateHeaders = require('./middlewares/validateHeaders.middleware');
 const errorHandler = require('./middlewares/error.middleware');
 const authRoutes = require('./routes/auth.route');
-const dashboardRoutes = require('./routes/dashboard.route');
+// const dashboardRoutes = require('./routes/dashboard.route');
 const loginRoutes = require('./routes/login.route');
 const registerRoutes=require('./routes/register.route');
+const adminRoutes=require('./routes/admin.route');
 const categoryRoutes = require('./routes/categories.route');
 const httpError = require('./utils/httpError.util');
 const { errorMessages, statusCodes } = require('./config/const.config');
@@ -24,8 +25,8 @@ const port = Number(process.env.PORT || 3002);
 // Common middlewares
 app.use(express.urlencoded({limit: '10mb', extended: true}));
 app.use(express.json());
-//app.use(express.static('public'));
-//app.use(express.static('uploads'));
+app.use(express.static('public'));
+app.use(express.static('uploads'));
 
 app.use(cors());
 app.options('*', cors());
@@ -36,8 +37,12 @@ app.options('*', cors());
 app.use('/auth', authRoutes);
 app.use('/categories', categoryRoutes);
 // app.use('/dashboard', dashboardRoutes );
+
 app.use('/login', loginRoutes);
+app.use('/getMapList',registerRoutes);
 app.use('/register', registerRoutes);
+// app.use('/admin', adminRoutes);
+
 app.use(function(req, res, next) {
   res.setHeader("Content-Type", "application/json");
   next();
@@ -77,6 +82,7 @@ app.post("/multiupload/:directory/:field", (req, res) => {
       cb(null, Date.now() + Math.floor(Math.random() * 9999) + path.extname(file.originalname));
     }
   });
+
   const upload = multer({ storage: storage }).array(field);
   upload(req, res, (err) => {
     if(err) {

@@ -2,6 +2,32 @@ const { statusCodes, dataStatusText, dataStatusValue, errorMessages, pageConfig,
 const { convertTimestampToDate, getCurrentTimestamp } = require('../utils/date.util');
 const registerModel = require('../models/register.model')
 
+const getListMapData = async (data, info) => {
+  const result = {
+    error: false,
+    data: {},
+  };
+
+  try {
+    const qData = await registerModel.fetchAllMapdata(info);
+    result.data = [];
+    qData.data.forEach((data) => {
+      result.data.push({
+        id: data.id,
+        name:data.name,
+        status: dataStatusText[data.status] || dataStatusText.NA,
+        created: convertTimestampToDate(data.created_at)
+      });
+    });
+
+  } catch (e) {
+    result.error = true;
+    result.status = statusCodes.SERVER_ERROR;
+    result.message = e.message;
+  }
+  return result;
+};
+
 const getList = async (data, info) => {
   const result = {
     error: false,
@@ -178,7 +204,10 @@ const deleteById = async (data, params) => {
   return result;
 };
 
+
+
 module.exports = {
+  getListMapData,
   getList,
   create,
   viewById,
