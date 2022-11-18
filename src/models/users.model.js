@@ -7,6 +7,7 @@ const {
 
 const tableName = 'user_master';
 
+
 const fetchAll = async (page, info) => {
   const qData = {
     data: [],
@@ -112,13 +113,14 @@ const deleteById = async (id, data) => {
   return qData.affectedRows || null;
 };
 
+
+
 const checkUserbyEmail = async (email) => {
   const query = `SELECT 
                   id, first_name AS firstName, last_name AS lastName, password, user_type 
                 FROM ${tableName} 
                 WHERE email = ? AND status = ?`;
   const params = [email, dataStatusValue.ACTIVE];
-
   const qData = await dbConnection.query(query, params);
   return qData[0] || null;
 };
@@ -128,7 +130,6 @@ const checkUserbyEmailUpdate = async (email, id) => {
                 FROM ${tableName} 
                 WHERE email = ? AND status = ? AND id != ?`;
   const params = [email, dataStatusValue.ACTIVE, id];
-
   const qData = await dbConnection.query(query, params);
   return qData[0] || null;
 };
@@ -136,7 +137,6 @@ const checkUserbyEmailUpdate = async (email, id) => {
 const updatePasswordById = async (id, data) => {
   const query = `UPDATE ${tableName} SET password = ?, modified_at = ?, modified_by = ? WHERE id = ?`;
   const params = [data.password, data.modified_at, data.modified_by, id];
-
   const qData = await dbConnection.query(query, params);
   return qData.affectedRows || null;
 };
@@ -147,7 +147,6 @@ const checkUserbyId = async (id) => {
                 FROM ${tableName} 
                 WHERE id = ? AND status = ?`;
   const params = [id, dataStatusValue.ACTIVE];
-
   const qData = await dbConnection.query(query, params);
   return qData[0] || null;
 };
@@ -243,6 +242,7 @@ const getTotal = async (info) => {
   qData['totalRows'] = Number(countData[0]['total']);
   return qData;
 };
+
 
 module.exports = {
   fetchAll,
