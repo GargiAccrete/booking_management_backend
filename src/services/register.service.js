@@ -28,14 +28,22 @@ const getListMapData = async (data, info) => {
   return result;
 };
 
-const getList = async (data, info) => {
-  const result = {
-    error: false,
-    data: {},
-  };
+const getList = async (data, params, info) => {
+  // const result = {
+    const result = {
+      error: false,
+      data: {},
+      totalRows: '',
+      currentPage: '',
+      totalPages: ''
+  }
+  const page = (info.queryData && info.queryData.page) ? info.queryData.page : "";
+  //   error: false,
+  //   data: {},
+  // };
 
   try {
-    const qData = await registerModel.fetchAll(info);
+    const qData = await registerModel.fetchAll(page,info);
     result.data = [];
     qData.data.forEach((data) => {
       result.data.push({
@@ -49,7 +57,7 @@ const getList = async (data, info) => {
         created: convertTimestampToDate(data.created_at)
       });
     });
-
+  
   } catch (e) {
     result.error = true;
     result.status = statusCodes.SERVER_ERROR;
@@ -133,13 +141,13 @@ const update = async (data, params) => {
   };
   const id = Number(params.id) || 0;
   //Validate request
-  const validationError = validateRegisterUpdate(data);
-  if (validationError) {
-    result.error = true;
-    result.status = statusCodes.BAD_REQUEST;
-    result.message = `${errorMessages.BAD_REQUEST} ${validationError}`;
-    return result;
-  }
+  // const validationError = validateRegisterUpdate(data);
+  // if (validationError) {
+  //   result.error = true;
+  //   result.status = statusCodes.BAD_REQUEST;
+  //   result.message = `${errorMessages.BAD_REQUEST} ${validationError}`;
+  //   return result;
+  // }
 
   //   // Save data
   try {
