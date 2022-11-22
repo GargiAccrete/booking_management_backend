@@ -19,12 +19,12 @@ const fetchAllMapdata = async (data) => {
 };
 
 const fetchAll = async (page,info) => {
-  const { city, desc, price, location } = info.queryData;
+  const { search, desc, price, location } = info.queryData;
    
     let condition = "";
 
-    if(city){
-      condition = ` AND restaurant.city LIKE '%${city}%' `;
+    if(search){
+      condition = ` AND restaurant.city LIKE '%${search}%' `;
   }if(desc){
       condition = ` ${condition} AND restaurant.description LIKE '%${desc}%' `;
   }if(price){
