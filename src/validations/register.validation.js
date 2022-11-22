@@ -11,7 +11,7 @@ const validateRegister = (data) => {
         state: Joi.required(),
         pincode: Joi.number().length(6).required(),
         bussiness_area: Joi.number().required(),
-        contact_no:joi.string().length(10).pattern(/^[0-9]+$/).required(),
+        contact_no:joi.string().length(10).pattern(/^[0-9]+$/).required()
     };
 
     const schema = Joi.object(validData);

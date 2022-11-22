@@ -3,7 +3,8 @@ const registerController = require('../controllers/register.controller')
 const router = express.Router();
 
 //map api
-router.get('/map',registerController.listMapData);
+router.get('/mapstate',registerController.listMapStateData);
+router.get('/mapcity',registerController.listCity);
 
 //register api
 router.get('/list',registerController.list);

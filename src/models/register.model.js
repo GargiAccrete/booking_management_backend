@@ -3,15 +3,26 @@ const { dataStatusValue, pageConfig, user_type, statusCodes } = require('../conf
 
 const tableName = 'restaurant';
 
-const fetchAllMapdata = async (data) => {
-  const query = `SELECT * FROM state_master
-  INNER JOIN cities
-  ON state_id = cities.state_id ;`
+const fetchAllMapStatedata = async (data) => {
+  const query = `SELECT * FROM states`
   const qData = {
     data: [],
     totalRows: '',
   };
 
+  const countParams = [dataStatusValue.DELETED];
+  const resultData = await dbConnection.query(query,countParams);
+  qData['data'] = resultData || [];
+  return qData;
+};
+
+const fetchAllMapCitydata = async (data) => {
+  const query = `SELECT * FROM cities WHERE status != ? `
+  const qData = {
+    data: [],
+    totalRows: '',
+  };
+  
   const countParams = [dataStatusValue.DELETED];
   const resultData = await dbConnection.query(query,countParams);
   qData['data'] = resultData || [];
@@ -32,6 +43,8 @@ const fetchAll = async (data) => {
   return qData;
 };
 
+
+
 const create = async (data) => {
   const query = `INSERT INTO ${tableName} 
             (business_type,
@@ -44,14 +57,10 @@ const create = async (data) => {
               pincode,
               business_area,
               contact_no, 
-              status, 
+              status,
               created_at,
-              created_by, 
-              modified_at,
-               modified_by) 
-            VALUES ( ?,
-               ?,?,?,?,?,
-                   ?,?,?,?,?,?,?,?,?)`;
+              created_by) 
+             VALUES ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
   const params = [
     data.business_type,
     data.legal_name,
@@ -63,11 +72,9 @@ const create = async (data) => {
     data.pincode,
     data.business_area,
     data.contact_no,
-    data.dataStatusValue.DELETED,
+    data.status,
     data.created_at,
     data.created_by,
-    data.modified_at,
-    data.modified_by,
   ];
  
   const qData = await dbConnection.query(query, params);
@@ -84,7 +91,6 @@ const viewById = async (id) =>{
 
 
 const update = async (id, data) => {
-    
     const query = `UPDATE ${tableName} SET 
     business_type = ?,
     legal_name = ?,
@@ -115,7 +121,6 @@ const update = async (id, data) => {
       id,
       dataStatusValue.DELETED
     ];
-    
     const qData = await dbConnection.query(query, params);
     return qData.affectedRows || null;
 };
@@ -128,7 +133,8 @@ const deleteById = async (id, data) => {
 };
 
 module.exports = {
-  fetchAllMapdata,
+  fetchAllMapCitydata,
+  fetchAllMapStatedata,
   fetchAll,
   create,
   viewById,

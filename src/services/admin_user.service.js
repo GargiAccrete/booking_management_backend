@@ -1,78 +1,31 @@
 const { statusCodes, dataStatusText, dataStatusValue, errorMessages, pageConfig, user_type } = require('../config/const.config');
 const { convertTimestampToDate, getCurrentTimestamp } = require('../utils/date.util');
-const registerModel = require('../models/register.model')
+const AdminUserModel = require('../models/admin_user.model');
+const bcrypt = require('bcrypt');
 
-const getListMapStateData = async (data, info) => {
+
+
+const getAdminUserList = async (data, info) => {
   const result = {
     error: false,
     data: {},
   };
 
   try {
-    const qData = await registerModel.fetchAllMapStatedata(info);
+    const qData = await AdminUserModel.fetchAlladminUser(info);
     result.data = [];
     qData.data.forEach((data) => {
       result.data.push({
         id: data.id,
-        name:data.name,
-        // status: dataStatusText[data.status] || dataStatusText.NA,
-        // created: convertTimestampToDate(data.created_at)
-      });
-    });
-
-  } catch (e) {
-    result.error = true;
-    result.status = statusCodes.SERVER_ERROR;
-    result.message = e.message;
-  }
-  return result;
-};
-
-const getListMapCityData = async (data, info ) => {
-  const result = {
-    error: false,
-    data: {},
-  };
-
-  try {
-    const qData = await registerModel.fetchAllMapCitydata(info);
-    result.data = [];
-   
-    qData.data.forEach((data) => {
-      result.data.push({
-        id: data.id,
-        state_id:data.state_id,
-        city:data.city,
-        // status: dataStatusText[data.status] || dataStatusText.NA,
-        // created: convertTimestampToDate(data.created_at)
-      });
-    });
-
-  } catch (e) {
-    result.error = true;
-    result.status = statusCodes.SERVER_ERROR;
-    result.message = e.message;
-  }
-  return result;
-};
-
-const getList = async (data, info) => {
-  const result = {
-    error: false,
-    data: {},
-  };
-
-  try {
-    const qData = await registerModel.fetchAll(info);
-    result.data = [];
-    qData.data.forEach((data) => {
-      result.data.push({
-        id: data.id,
-        business_area: data.business_area_1,
-        contact_no: data.contact_no,
-        city: data.city,
-        state: data.state,
-        legal_name: data.legal_name,
+        name: data.name,
+        email: data.email,
+        designation: data.designation,
+        is_super_admin:data.is_super_admin,
+        status:data.status,
+        // created_at:data.created_at,
+        // created_by:data.created_by,
+        // modified_at:data.modified_at,
+        // modified_by:data.modified_by
         // status: dataStatusText[data.status] || dataStatusText.NA,
         // created: convertTimestampToDate(data.created_at)
       });
@@ -100,23 +53,27 @@ const create = async (data, params) => {
   //   return result;
   // }
   try {
-    const qData = await registerModel.create({
-      business_type: data.business_type,
-      legal_name: data.legal_name,
-      brand_associate: data.brand_associate,
-      address_line_1: data.address_line_1,
-      address_line_2: data.address_line_2,
-      city: data.city,
-      state: data.state,
-      pincode: data.pincode,
-      business_area: data.business_area,
-      contact_no: data.contact_no,
+
+
+   
+    // const salt =await bcrypt.genSalt(10);
+    // const secPass = await bcrypt.hash(data.password,salt) ;
+    // value = await bcrypt.hash(value,salt)
+    const qData = await AdminUserModel.create({
+      name: data.name,
+      email: data.email,
+      password: await bcrypt.hash(data.password,8),
+      designation: data.designation,
+      is_super_admin: data.is_super_admin,
       status: dataStatusValue.ACTIVE,
       created_at: getCurrentTimestamp(),
       created_by: 0,
       // modified_at: getCurrentTimestamp(),
       // modified_by: 0,
     });
+
+    // const jwtData=jwt.sign(data,jwt_secret);
+    // console.log(jwtData);
     result.data = qData;
 
   } catch (e) {
@@ -135,7 +92,7 @@ const viewById = async (data, params, info) => {
   const id = Number(params.id) || 0;
   // Get data
   try {
-    const qData = await registerModel.viewById(id);
+    const qData = await AdminUserModel.viewById(id);
     if (qData) {
       qData.status = dataStatusText[qData.status] || dataStatusText.NA,
         qData.created_at = convertTimestampToDate(qData.created_at);
@@ -170,20 +127,14 @@ const update = async (data, params) => {
 
   //   // Save data
   try {
-    const qData = await registerModel.viewById(id);
+    const qData = await AdminUserModel.viewById(id);
     if (qData) {
 
-      const saveData = await registerModel.update(id, {
-        business_type: data.business_type,
-        legal_name: data.legal_name,
-        brand_associate: data.brand_associate,
-        address_line_1: data.address_line_1,
-        address_line_2: data.address_line_2,
-        city: data.city,
-        state: data.state,
-        pincode: data.pincode,
-        business_area: data.business_area,
-        contact_no: data.contact_no,
+      const saveData = await AdminUserModel.update(id, {
+        name:data.name,
+        email:data.email,
+        designation: data.designation,
+        is_super_admin: data.is_super_admin,
         modified_at: getCurrentTimestamp(),
         modified_by: 0,
       });
@@ -207,13 +158,12 @@ const deleteById = async (data, params) => {
     error: false,
     data: {},
   };
-  const id = Number(params.id) || 0;
-
+  const id = Number(params.id);
   // Save data
   try {
-    const qData = await registerModel.viewById(id);
+    const qData = await AdminUserModel.viewById(id);
     if (qData) {
-      const saveData = await registerModel.deleteById(id, {
+      const saveData = await AdminUserModel.deleteById(id, {
         modified_at: getCurrentTimestamp(),
         modified_by: id,
       });
@@ -234,11 +184,9 @@ const deleteById = async (data, params) => {
 
 
 module.exports = {
-  getListMapCityData,
-  getListMapStateData,
-  getList,
+getAdminUserList,
   create,
-  viewById,
+ viewById,
   update,
   deleteById,
 };
