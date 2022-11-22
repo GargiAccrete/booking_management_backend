@@ -6,8 +6,9 @@ const errorHandler = require('./middlewares/error.middleware');
 const authRoutes = require('./routes/auth.route');
 // const dashboardRoutes = require('./routes/dashboard.route');
 const loginRoutes = require('./routes/login.route');
+const adminUserRoutes = require('./routes/admin_user.route');
 const registerRoutes=require('./routes/register.route');
-const adminRoutes=require('./routes/admin.route');
+// const adminRoutes=require('./routes/admin_user.route');
 const categoryRoutes = require('./routes/categories.route');
 const httpError = require('./utils/httpError.util');
 const { errorMessages, statusCodes } = require('./config/const.config');
@@ -39,8 +40,9 @@ app.use('/categories', categoryRoutes);
 // app.use('/dashboard', dashboardRoutes );
 
 app.use('/login', loginRoutes);
-app.use('/getMapList',registerRoutes);
 app.use('/register', registerRoutes);
+app.use('/adminUser', adminUserRoutes);
+
 // app.use('/admin', adminRoutes);
 
 app.use(function(req, res, next) {
