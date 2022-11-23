@@ -4,7 +4,7 @@ const { dataStatusValue, pageConfig, user_type, statusCodes } = require('../conf
 const tableName = 'restaurant';
 
 const fetchAllMapStatedata = async (data) => {
-  const query = `SELECT * FROM states`
+  const query = `SELECT  id,name FROM states WHERE status!=?`
   const qData = {
     data: [],
     totalRows: '',
@@ -16,18 +16,44 @@ const fetchAllMapStatedata = async (data) => {
   return qData;
 };
 
-const fetchAllMapCitydata = async (data) => {
-  const query = `SELECT * FROM cities WHERE status != ? `
+const fetchAllMapCitydata = async (state_id,data) => {
+  const query = `SELECT id,city,state_id FROM cities WHERE state_id=? AND status!=?`
   const qData = {
     data: [],
     totalRows: '',
   };
+  const countParams = [state_id,dataStatusValue.DELETED];
+  console.log(query,countParams);
+  const resultData = await dbConnection.query(query,countParams);
+  qData['data'] = resultData || [];
+  return qData;
+};
+
+// const fetchAllMapStatedata = async (data) => {
+//   const query = `SELECT * FROM states`
+//   const qData = {
+//     data: [],
+//     totalRows: '',
+//   };
+
+//   const countParams = [dataStatusValue.DELETED];
+//   const resultData = await dbConnection.query(query,countParams);
+//   qData['data'] = resultData || [];
+//   return qData;
+// };
+
+// const fetchAllMapCitydata = async (state_id,data) => {
+//   const query = `SELECT * FROM cities WHERE status != ? `
+//   const qData = {
+//     data: [],
+//     totalRows: '',
+//   };
   
-  const countParams = [dataStatusValue.DELETED];
-  const resultData = await dbConnection.query(query,countParams);
-  qData['data'] = resultData || [];
-  return qData;
-};
+//   const countParams = [state_id,dataStatusValue.DELETED];
+//   const resultData = await dbConnection.query(query,countParams);
+//   qData['data'] = resultData || [];
+//   return qData;
+// };
 
 // const fetchAll = async (data) => {
 const fetchAll = async (page,info) => {

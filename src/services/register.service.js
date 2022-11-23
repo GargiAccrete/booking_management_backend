@@ -2,6 +2,7 @@ const { statusCodes, dataStatusText, dataStatusValue, errorMessages, pageConfig,
 const { convertTimestampToDate, getCurrentTimestamp } = require('../utils/date.util');
 const registerModel = require('../models/register.model')
 
+
 const getListMapStateData = async (data, info) => {
   const result = {
     error: false,
@@ -28,14 +29,17 @@ const getListMapStateData = async (data, info) => {
   return result;
 };
 
-const getListMapCityData = async (data, info ) => {
+const getListMapCityData = async (data,params) => {
+  console.log(params);
   const result = {
     error: false,
     data: {},
   };
 
+   const state_id = Number(params.state_id)
+
   try {
-    const qData = await registerModel.fetchAllMapCitydata(info);
+    const qData = await registerModel.fetchAllMapCitydata(state_id,params);
     result.data = [];
    
     qData.data.forEach((data) => {
@@ -55,6 +59,60 @@ const getListMapCityData = async (data, info ) => {
   }
   return result;
 };
+// const getListMapStateData = async (data, info) => {
+//   const result = {
+//     error: false,
+//     data: {},
+//   };
+
+//   try {
+//     const qData = await registerModel.fetchAllMapStatedata(info);
+//     result.data = [];
+//     qData.data.forEach((data) => {
+//       result.data.push({
+//         id: data.id,
+//         name:data.name,
+//         // status: dataStatusText[data.status] || dataStatusText.NA,
+//         // created: convertTimestampToDate(data.created_at)
+//       });
+//     });
+
+//   } catch (e) {
+//     result.error = true;
+//     result.status = statusCodes.SERVER_ERROR;
+//     result.message = e.message;
+//   }
+//   return result;
+// };
+
+// const getListMapCityData = async (data,params ) => {
+//   const result = {
+//     error: false,
+//     data: {},
+//   };
+//   const state_id = Number(params.state_id)
+
+//   try {
+//     const qData = await registerModel.fetchAllMapCitydata(state_id,params);
+//     result.data = [];
+   
+//     qData.data.forEach((data) => {
+//       result.data.push({
+//         id: data.id,
+//         state_id:data.state_id,
+//         city:data.city,
+//         // status: dataStatusText[data.status] || dataStatusText.NA,
+//         // created: convertTimestampToDate(data.created_at)
+//       });
+//     });
+
+//   } catch (e) {
+//     result.error = true;
+//     result.status = statusCodes.SERVER_ERROR;
+//     result.message = e.message;
+//   }
+//   return result;
+// };
 
 const getList = async (data, params, info) => {
   // const result = {

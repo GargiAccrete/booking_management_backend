@@ -2,12 +2,11 @@ const httpError = require('../utils/httpError.util');
 const { statusCodes, requestHeaders } = require('../config/const.config');
 const registerService = require('../services/register.service');
 
-
 const listMapStateData = async (req, res, next) => {
   try {
    
-      const { body} = req;
-      const result = await registerService.getListMapStateData(body);
+      const { body,params} = req;
+      const result = await registerService.getListMapStateData(body,params);
   
       if (result.error) {
         next(httpError(result.message, result.status));
@@ -21,8 +20,8 @@ const listMapStateData = async (req, res, next) => {
 
 const listCity = async (req, res, next) => {
   try {
-      const { body} = req;
-      const result = await registerService.getListMapCityData(body);
+      const { body,params} = req;
+      const result = await registerService.getListMapCityData(body,params);
   
       if (result.error) {
         next(httpError(result.message, result.status));
@@ -33,6 +32,37 @@ const listCity = async (req, res, next) => {
       next(httpError(e.message, statusCodes.SERVER_ERROR));
     }
 };
+
+// const listMapStateData = async (req, res, next) => {
+//   try {
+   
+//       const { body} = req;
+//       const result = await registerService.getListMapStateData(body);
+  
+//       if (result.error) {
+//         next(httpError(result.message, result.status));
+//       } else {
+//         res.json({ success: true, data: result.data});
+//       }
+//     } catch (e) {
+//       next(httpError(e.message, statusCodes.SERVER_ERROR));
+//     }
+// };
+
+// const listCity = async (req, res, next) => {
+//   try {
+//       const { body,params} = req;
+//       const result = await registerService.getListMapCityData(body,params);
+  
+//       if (result.error) {
+//         next(httpError(result.message, result.status));
+//       } else {
+//         res.json({ success: true, data: result.data});
+//       }
+//     } catch (e) {
+//       next(httpError(e.message, statusCodes.SERVER_ERROR));
+//     }
+// };
 
 
 const list = async (req, res, next) => {

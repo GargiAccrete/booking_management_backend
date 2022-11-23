@@ -50,7 +50,7 @@ const create = async (data) => {
   try {
 
     const query = `INSERT INTO ${tableName} 
-            (name,
+            ( name,
               email,
               password,
               designation,
@@ -71,7 +71,7 @@ const create = async (data) => {
       // data.modified_at,
       // data.modified_by
     ];
-    console.log(query,params);
+    
     const qData = await dbConnection.query(query, params);
     return qData.insertId || null;
   } catch (error) {

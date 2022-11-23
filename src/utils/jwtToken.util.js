@@ -68,5 +68,5 @@ module.exports = {
   getLoggedInUser,
   getLoggedInUserPolicyId,
   getTokenData,
-  getUserType,
+  getUserType
 };

@@ -4,6 +4,9 @@ const AdminUserModel = require('../models/admin_user.model');
 const { loginToken } = require('../utils/jwtToken.util');
 const bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
+const SECRET_KEY= "USERADMINAPI";
+
+
 
 // var token = jwt.sign({ foo: 'bar' }, 'shhhhh');
 // console.log(token);
@@ -139,16 +142,23 @@ const create = async (data, params) => {
     
     // const jwtData=jwt.sign(data,jwt_secret);
     // console.log(jwtData);
-    result.data = qData;
 
+
+    // const token = jwt.sign({email:result.email, id:result._id},SECRET_KEY);
+    // res.send(201).json({user:result, token:token});
+    
+    result.data = qData;
+    
   } catch (e) {
     result.error = true;
     result.status = statusCodes.SERVER_ERROR;
     result.message = e.message;
   }
-  
   return result;
+
 };
+
+
 
 const viewById = async (data, params, info) => {
   const result = {

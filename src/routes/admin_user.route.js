@@ -1,5 +1,6 @@
 const express = require('express');
 const AdminUserController = require('../controllers/admin_user.controller');
+const isAuth = require('../middlewares/isAuth.middleware');
 const router = express.Router();
 
 //map api
