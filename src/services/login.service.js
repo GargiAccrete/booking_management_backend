@@ -18,6 +18,7 @@ const login = async (data, params) => {
 	}
   
 	try {
+
 		const qData = await loginModel.login({
 			name:data.name,
 			contact:data.contact,

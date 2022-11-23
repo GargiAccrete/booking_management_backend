@@ -2,7 +2,13 @@ const express = require('express');
 const AdminUserController = require('../controllers/admin_user.controller');
 const router = express.Router();
 
+//map api
+router.get('/mapstate',AdminUserController.listMapStateData);
+router.get('/mapcity/:state_id',AdminUserController.listCity);
+router.get('/mapcity',AdminUserController.listCity);
 
+// router.post('/login', AdminUserController.login);
+// router.get('/logout', AdminUserController.logout);
 
 //AdminUser api
 router.get('/list',AdminUserController.list);

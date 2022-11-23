@@ -4,6 +4,32 @@ const { dataStatusValue, pageConfig, user_type, statusCodes } = require('../conf
 const tableName = 'admin_user';
 
 
+const fetchAllMapStatedata = async (data) => {
+  const query = `SELECT  id,name FROM states WHERE status!=?`
+  const qData = {
+    data: [],
+    totalRows: '',
+  };
+
+  const countParams = [dataStatusValue.DELETED];
+  const resultData = await dbConnection.query(query,countParams);
+  qData['data'] = resultData || [];
+  return qData;
+};
+
+const fetchAllMapCitydata = async (state_id,data) => {
+  const query = `SELECT id,city,state_id FROM cities WHERE state_id=? AND status!=?`
+  const qData = {
+    data: [],
+    totalRows: '',
+  };
+  
+  const countParams = [state_id,dataStatusValue.DELETED];
+  const resultData = await dbConnection.query(query,countParams);
+  qData['data'] = resultData || [];
+  return qData;
+};
+
 
 const fetchAlladminUser = async (data) => {
   const query = `SELECT id,name,email,password,designation,is_super_admin,status,created_at,created_by,modified_at,modified_by FROM ${tableName} 
@@ -93,7 +119,20 @@ const deleteById = async (id, data) => {
   return qData.affectedRows || null;
 };
 
+const checkUserbyEmail = async (email) => {
+  const query = `SELECT 
+                  id, name AS Name, password 
+                FROM ${tableName} 
+                WHERE email = ? AND status = ?`;
+  const params = [email, dataStatusValue.ACTIVE];
+  const qData = await dbConnection.query(query, params);
+  return qData[0] || null;
+};
+
 module.exports = {
+  fetchAllMapStatedata,
+  fetchAllMapCitydata,
+  checkUserbyEmail,
   fetchAlladminUser,
   create,
   viewById,
