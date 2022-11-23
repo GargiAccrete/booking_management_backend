@@ -4,6 +4,7 @@ const router = express.Router();
 
 //map api
 router.get('/mapstate',registerController.listMapStateData);
+router.get('/mapcity/:state_id',registerController.listCity);
 router.get('/mapcity',registerController.listCity);
 
 //register api

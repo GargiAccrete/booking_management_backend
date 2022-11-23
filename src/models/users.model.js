@@ -124,6 +124,7 @@ const checkUserbyEmail = async (email) => {
   const qData = await dbConnection.query(query, params);
   return qData[0] || null;
 };
+
 const checkUserbyEmailUpdate = async (email, id) => {
   const query = `SELECT 
                   id, first_name AS firstName, last_name AS lastName, password, user_type 

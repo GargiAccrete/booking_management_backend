@@ -22,8 +22,6 @@ const loginUser = async (data) => {
     result.message = `${errorMessages.BAD_REQUEST} ${validationError}`;
     return result;
   }
-
-
 //   try{
 //     const qData = await userModel.checkbyName(data.name);
 //     if (qData){
