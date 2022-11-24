@@ -2,7 +2,6 @@ const { statusCodes, dataStatusText, dataStatusValue, errorMessages, pageConfig,
 const { convertTimestampToDate, getCurrentTimestamp } = require('../utils/date.util');
 const registerModel = require('../models/register.model')
 
-
 const getListMapStateData = async (data, info) => {
   const result = {
     error: false,
@@ -45,7 +44,7 @@ const getListMapCityData = async (data,params) => {
       result.data.push({
         id: data.id,
         state_id:data.state_id,
-        city:data.id,
+        city:data.city
         // status: dataStatusText[data.status] || dataStatusText.NA,
         // created: convertTimestampToDate(data.created_at)
       });
@@ -114,7 +113,6 @@ const getListMapCityData = async (data,params) => {
 // };
 
 const getList = async (data, params, info) => {
-  // const result = {
     const result = {
       error: false,
       data: {},
@@ -122,22 +120,16 @@ const getList = async (data, params, info) => {
       currentPage: '',
       totalPages: ''
   }
-  // const page = (info.queryData && info.queryData.page) ? info.queryData.page : "";
-  //   error: false,
-  //   data: {},
-  // };
-
   try {
-    const qData = await registerModel.fetchAll(page,info);
+    const qData = await registerModel.fetchAll(info);
     result.data = [];
     qData.data.forEach((data) => {
       result.data.push({
         id: data.id,
-        business_area: data.business_area_1,
-        contact_no: data.contact_no,
-        city: data.city,
-        state: data.state,
-        legal_name: data.legal_name,
+        legal_name:data.legal_name,
+        state:data.state,
+        city:data.city,
+        contact_no: data.contact_no
         // status: dataStatusText[data.status] || dataStatusText.NA,
         // created: convertTimestampToDate(data.created_at)
       });

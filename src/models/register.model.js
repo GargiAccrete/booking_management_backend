@@ -28,34 +28,45 @@ const fetchAllMapCitydata = async (state_id,data) => {
   return qData;
 };
 
-const fetchAll = async (page,info) => {
-  const { search, desc, price, location } = info.queryData;
+// const fetchAll = async (page,info) => {
+//   const { search, desc, price, location } = info.queryData;
    
-    let condition = "";
+//     let condition = "";
 
-    if(search){
-      condition = ` AND restaurant.city LIKE '%${search}%' `;
-  }if(desc){
-      condition = ` ${condition} AND restaurant.description LIKE '%${desc}%' `;
-  }if(price){
-      condition = ` ${condition} AND restaurant.price = ${price} `;
-  }if(location){
-      condition = ` ${condition} AND restaurant.location_id = ${location} `;
-  }
-  const query = `SELECT * FROM ${tableName} 
-  WHERE status != ? ${condition} `
+//     if(search){
+//       condition = ` AND restaurant.city LIKE '%${search}%' `;
+//   }if(desc){
+//       condition = ` ${condition} AND restaurant.description LIKE '%${desc}%' `;
+//   }if(price){
+//       condition = ` ${condition} AND restaurant.price = ${price} `;
+//   }if(location){
+//       condition = ` ${condition} AND restaurant.location_id = ${location} `;
+//   }
+//   const query = `SELECT * FROM ${tableName} 
+//   WHERE status != ? ${condition} `
+//   const qData = {
+//     data: [],
+//     totalRows: '',
+//   };
+//   const countParams = [dataStatusValue.DELETED];
+//   const resultData = await dbConnection.query(query,countParams);
+//   console.log("resultData",resultData)
+//   qData['data'] = resultData || [];
+//   return qData;
+// };
+
+const fetchAll = async (data) => {
+  const query = `SELECT id,legal_name,state,city,contact_no FROM ${tableName} 
+  WHERE status != ?`
   const qData = {
     data: [],
     totalRows: '',
   };
   const countParams = [dataStatusValue.DELETED];
-  const resultData = await dbConnection.query(query,countParams);
-  console.log("resultData",resultData)
+  const resultData = await dbConnection.query(query, countParams);
   qData['data'] = resultData || [];
   return qData;
 };
-
-
 
 const create = async (data) => {
   const query = `INSERT INTO ${tableName} 
@@ -72,7 +83,7 @@ const create = async (data) => {
               status,
               created_at,
               created_by) 
-             VALUES ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+             VALUES ( ?,?,?,?,?,?,?,?,?,?,?,?,?)`;
   const params = [
     data.business_type,
     data.legal_name,

@@ -137,7 +137,6 @@ const resetPassword = async (data) => {
   return result;
 };
 
-
 const forgotPassword = async (data) => {
   const result = {
     error: false,
@@ -187,7 +186,6 @@ const forgotPassword = async (data) => {
     result.status = statusCodes.SERVER_ERROR;
     result.message = e.message;
   }
-
   return result;
 };
 
@@ -197,7 +195,6 @@ const changePassword = async (data, params, info) => {
     data: {},
   };
   const { userId } = info;
-  
   // Validate request
   const validationError = validateChangePassword(data, true);
   if (validationError) {
