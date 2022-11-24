@@ -10,13 +10,13 @@ const login = async (data, params) => {
 	  data: {},
 	};
 
-	const validationError = validateUserlogin(data);
-	if (validationError) {
-	  result.error = true;
-	  result.status = statusCodes.BAD_REQUEST;
-	  result.message = `${errorMessages.BAD_REQUEST} ${validationError}`;
-	  return result;
-	}
+	// const validationError = validateUserlogin(data);
+	// if (validationError) {
+	//   result.error = true;
+	//   result.status = statusCodes.BAD_REQUEST;
+	//   result.message = `${errorMessages.BAD_REQUEST} ${validationError}`;
+	//   return result;
+	// }
 
 	// try {
 	// 	const user_id = data.id || "";
@@ -83,8 +83,6 @@ const login = async (data, params) => {
 	//   }
 	//   return result;
 	// };
-	
-  
 	try {
 		const qData = await loginModel.login({
 			name:data.name,
@@ -96,9 +94,8 @@ const login = async (data, params) => {
 			modified_at: getCurrentTimestamp(),
 			modified_by: 0
 		});
-	
 	  result.data = qData;
-  
+
 	} catch (e) {
 	  result.error = true;
 	  result.status = statusCodes.SERVER_ERROR;

@@ -6,13 +6,11 @@ const tableName = 'usersdata';
 const login = async (data) => {
   console.log(data);
   const query = `INSERT INTO ${tableName} 
-              (name, contact, password, status, created_at, created_by, modified_at, modified_by) 
+              (name, contact, status, created_at, created_by, modified_at, modified_by) 
               VALUES (?, ?, ?, ?, ?, ?,?)`;
   const params = [
      data.name,
      data.contact,
-    // data.email,
-    data.password,
     data.status,
     data.created_at,
     data.created_by,

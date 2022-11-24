@@ -35,14 +35,8 @@ const listCity = async (req, res, next) => {
 
 const list = async (req, res, next) => {
     try {
-     
-        const { body,params} = req;
-        const info={
-        queryData: req.query
-        }
-       
-        const result = await registerService.getList(body,params,info);
-    
+        const { body} = req;
+        const result = await registerService.getList(body);
         if (result.error) {
           next(httpError(result.message, result.status));
         } else {

@@ -70,9 +70,6 @@ const getListMapCityData = async (data,params) => {
 
 
 
-
-
-
 const getAdminUserList = async (data, info) => {
   const result = {
     error: false,
