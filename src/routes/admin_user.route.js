@@ -4,9 +4,9 @@ const isAuth = require('../middlewares/isAuth.middleware');
 const router = express.Router();
 
 //map api
-router.get('/mapstate',AdminUserController.listMapStateData);
-router.get('/mapcity/:state_id',AdminUserController.listCity);
-router.get('/mapcity',AdminUserController.listCity);
+// router.get('/mapstate',AdminUserController.listMapStateData);
+// router.get('/mapcity/:state_id',AdminUserController.listCity);
+// router.get('/mapcity',AdminUserController.listCity);
 
 // router.post('/login', AdminUserController.login);
 // router.get('/logout', AdminUserController.logout);

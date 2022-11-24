@@ -144,7 +144,7 @@ const updatePasswordById = async (id, data) => {
 
 const checkUserbyId = async (id) => {
   const query = `SELECT 
-                  id, password 
+                id, password 
                 FROM ${tableName} 
                 WHERE id = ? AND status = ?`;
   const params = [id, dataStatusValue.ACTIVE];

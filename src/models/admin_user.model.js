@@ -3,7 +3,6 @@ const { dataStatusValue, pageConfig, user_type, statusCodes } = require('../conf
 
 const tableName = 'admin_user';
 
-
 const fetchAllMapStatedata = async (data) => {
   const query = `SELECT  id,name FROM states WHERE status!=?`
   const qData = {
