@@ -17,6 +17,7 @@ const login = async (data, params) => {
 	  result.message = `${errorMessages.BAD_REQUEST} ${validationError}`;
 	  return result;
 	}
+	
 	try {
 		const user_id = data.id || "";
 		const token = data.token || "";

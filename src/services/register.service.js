@@ -296,8 +296,6 @@ const deleteById = async (data, params) => {
   return result;
 };
 
-
-
 module.exports = {
   getListMapCityData,
   getListMapStateData,

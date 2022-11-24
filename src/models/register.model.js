@@ -3,26 +3,26 @@ const { dataStatusValue, pageConfig, user_type, statusCodes } = require('../conf
 
 const tableName = 'restaurant';
 
-const fetchAllMapStatedata = async (id,data) => {
+const fetchAllMapStatedata = async (data) => {
   const query = `SELECT  id, name FROM states WHERE status!=?`
   const qData = {
     data: [],
     totalRows: '',
   };
 
-  const countParams = [id,dataStatusValue.DELETED];
+  const countParams = [dataStatusValue.DELETED];
   const resultData = await dbConnection.query(query,countParams);
   qData['data'] = resultData || [];
   return qData;
 };
 
-const fetchAllMapCitydata = async (state_id,data,id) => {
+const fetchAllMapCitydata = async (state_id,data) => {
   const query = `SELECT id, city, state_id FROM cities WHERE state_id=? AND status!=?`
   const qData = {
     data: [],
     totalRows: '',
   };
-  const countParams = [id,state_id,dataStatusValue.DELETED];
+  const countParams = [state_id,dataStatusValue.DELETED];
   const resultData = await dbConnection.query(query,countParams);
   qData['data'] = resultData || [];
   return qData;
