@@ -56,12 +56,13 @@ const fetchAllMapCitydata = async (state_id,data) => {
 // };
 
 const fetchAll = async (data) => {
-  const query = `SELECT id,legal_name,state,city,contact_no FROM ${tableName} 
+  const query = `SELECT id, legal_name, state, city, contact_no FROM restaurant INNER JOIN states ON restaurant.states = states.states_id 
   WHERE status != ?`
   const qData = {
     data: [],
     totalRows: '',
   };
+  
   const countParams = [dataStatusValue.DELETED];
   const resultData = await dbConnection.query(query, countParams);
   qData['data'] = resultData || [];
@@ -97,7 +98,7 @@ const create = async (data) => {
     data.contact_no,
     data.status,
     data.created_at,
-    data.created_by,
+    data.created_by
   ];
  
   const qData = await dbConnection.query(query, params);
@@ -110,7 +111,6 @@ const viewById = async (id) =>{
     const qData = await dbConnection.query(query, params);
     return qData[0] || null;
 }
-
 
 const update = async (id, data) => {
     const query = `UPDATE ${tableName} SET 
@@ -147,6 +147,7 @@ const update = async (id, data) => {
     return qData.affectedRows || null;
 };
 
+
 const deleteById = async (id, data) => {
   const query = `UPDATE ${tableName} SET status = ?, modified_at = ?, modified_by = ? WHERE id = ?`;
   const params = [dataStatusValue.DELETED, data.modified_at, data.modified_by, id];
@@ -161,6 +162,5 @@ module.exports = {
   create,
   viewById,
   update,
-  update,
-  deleteById
-};
+  deleteById,
+}

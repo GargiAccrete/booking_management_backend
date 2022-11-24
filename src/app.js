@@ -22,7 +22,6 @@ dotenv.config();
 
 // Set server port
 const port = Number(process.env.PORT || 3002);
-
 // Common middlewares
 app.use(express.urlencoded({limit: '10mb', extended: true}));
 app.use(express.json());
