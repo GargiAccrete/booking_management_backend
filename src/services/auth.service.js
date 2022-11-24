@@ -73,10 +73,8 @@ const loginUser = async (data) => {
     result.status = statusCodes.SERVER_ERROR;
     result.message = e.message;
   }
-
   return result;
 };
-
 
 
 const resetPassword = async (data) => {
@@ -138,6 +136,7 @@ const resetPassword = async (data) => {
   }
   return result;
 };
+
 
 const forgotPassword = async (data) => {
   const result = {

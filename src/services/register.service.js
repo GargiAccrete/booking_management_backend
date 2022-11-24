@@ -37,7 +37,6 @@ const getListMapCityData = async (data,params) => {
   };
 
    const state_id = Number(params.state_id)
-
   try {
     const qData = await registerModel.fetchAllMapCitydata(state_id,params);
     result.data = [];
@@ -46,7 +45,7 @@ const getListMapCityData = async (data,params) => {
       result.data.push({
         id: data.id,
         state_id:data.state_id,
-        city:data.city,
+        city:data.id,
         // status: dataStatusText[data.status] || dataStatusText.NA,
         // created: convertTimestampToDate(data.created_at)
       });
@@ -123,7 +122,7 @@ const getList = async (data, params, info) => {
       currentPage: '',
       totalPages: ''
   }
-  const page = (info.queryData && info.queryData.page) ? info.queryData.page : "";
+  // const page = (info.queryData && info.queryData.page) ? info.queryData.page : "";
   //   error: false,
   //   data: {},
   // };
@@ -198,7 +197,7 @@ const viewById = async (data, params, info) => {
     error: false,
     data: {},
   };
-  const id = Number(params.id) || 0;
+  const id = Number(params.id) ;
   // Get data
   try {
     const qData = await registerModel.viewById(id);

@@ -99,7 +99,6 @@ const viewById = async (req, res, next) => {
     
 };
 
-
 const update = async (req, res, next) => {
     try {
         const { body, params } = req;
