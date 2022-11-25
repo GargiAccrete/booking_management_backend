@@ -37,7 +37,6 @@ const fetchAlladminUser = async (data) => {
     data: [],
     totalRows: '',
   };
-
   const countParams = [dataStatusValue.DELETED];
   const resultData = await dbConnection.query(query, countParams);
   qData['data'] = resultData || [];
@@ -47,7 +46,6 @@ const fetchAlladminUser = async (data) => {
 
 const create = async (data) => {
   try {
-
     const query = `INSERT INTO ${tableName} 
             ( name,
               email,
@@ -120,12 +118,12 @@ const deleteById = async (id, data) => {
 
 const checkUserbyEmail = async (email) => {
   const query = `SELECT 
-                  id, name AS Name, password 
+                  id,Name AS name, Email AS email, password
                 FROM ${tableName} 
-                WHERE email = ? AND status = ?`;
-  const params = [email, dataStatusValue.ACTIVE];
+                WHERE email = ? AND status != ?`;
+  const params = [email, dataStatusValue.DELETED];
   const qData = await dbConnection.query(query, params);
-  return qData[0] || null;
+  return qData || [];
 };
 
 module.exports = {

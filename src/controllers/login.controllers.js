@@ -10,15 +10,32 @@ const login = async (req, res, next) => {
   const { body,params} = req;
   const result = await loginService.login(body, params);
     if (result.error) {
-      next(httpError(result.message, result.status));
+      res.json({message:result.msg, error: result.error})
+      // next(httpError(result.message, result.status));
     } else {
-      res.json({ success: true });
+      res.json({ success: true , authToken: result.token });
     }
   } catch (e) {
-    next(httpError(e.message, statusCodes.SERVER_ERROR));
+    res.json({error:true, message: e})
+    // next(httpError(e.message, statusCodes.SERVER_ERROR));
   }
 };
 
+const loginlist = async (req, res, next) => {
+  try {
+      const { body} = req;
+      const result = await loginService.getList(body);
+      if (result.error) {
+        next(httpError(result.message, result.status));
+      } else {
+        res.json({ success: true, data: result.data});
+      }
+    } catch (e) {
+      next(httpError(e.message, statusCodes.SERVER_ERROR));
+    }
+};
+
 module.exports = {
-  login
+  login,
+  loginlist
 };

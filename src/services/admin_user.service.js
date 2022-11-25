@@ -4,7 +4,7 @@ const AdminUserModel = require('../models/admin_user.model');
 const { loginToken } = require('../utils/jwtToken.util');
 const bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
-const SECRET_KEY= "USERADMINAPI";
+const SECRET_KEY = "USERADMINAPI";
 
 
 
@@ -23,7 +23,7 @@ const getListMapStateData = async (data, info) => {
     qData.data.forEach((data) => {
       result.data.push({
         id: data.id,
-        name:data.name,
+        name: data.name,
         // status: dataStatusText[data.status] || dataStatusText.NA,
         // created: convertTimestampToDate(data.created_at)
       });
@@ -37,24 +37,24 @@ const getListMapStateData = async (data, info) => {
   return result;
 };
 
-const getListMapCityData = async (data,params) => {
+const getListMapCityData = async (data, params) => {
   console.log(params);
   const result = {
     error: false,
     data: {},
   };
 
-   const state_id = Number(params.state_id)
+  const state_id = Number(params.state_id)
 
   try {
-    const qData = await AdminUserModel.fetchAllMapCitydata(state_id,params);
+    const qData = await AdminUserModel.fetchAllMapCitydata(state_id, params);
     result.data = [];
-   
+
     qData.data.forEach((data) => {
       result.data.push({
         id: data.id,
-        state_id:data.state_id,
-        city:data.city,
+        state_id: data.state_id,
+        city: data.city,
         // status: dataStatusText[data.status] || dataStatusText.NA,
         // created: convertTimestampToDate(data.created_at)
       });
@@ -86,8 +86,8 @@ const getAdminUserList = async (data, info) => {
         email: data.email,
         // password:data.password,
         designation: data.designation,
-        is_super_admin:data.is_super_admin,
-        status:data.status,
+        is_super_admin: data.is_super_admin,
+        status: data.status,
         // created_at:data.created_at,
         // created_by:data.created_by,
         // modified_at:data.modified_at,
@@ -106,56 +106,57 @@ const getAdminUserList = async (data, info) => {
 };
 
 const create = async (data, params) => {
-  
   const result = {
     error: false,
     data: {},
   };
-  // const validationError = validateRegister(data);
-  // if (validationError) {
-  //   result.error = true;
-  //   result.status = statusCodes.BAD_REQUEST;
-  //   result.message = `${errorMessages.BAD_REQUEST} ${validationError}`;
-  //   return result;
-  // }
+  const { email, password } = data;
   try {
-    // const salt =await bcrypt.genSalt(10);
-    // const secPass = await bcrypt.hash(data.password,salt) ;
-    // value = await bcrypt.hash(value,salt)
-    const qData = await AdminUserModel.create({
-      name: data.name,
-      email: data.email,
-      password: await bcrypt.hash(data.password,8),
-      designation: data.designation,
-      is_super_admin: data.is_super_admin,
-      status: dataStatusValue.ACTIVE,
-      created_at: getCurrentTimestamp(),
-      created_by: 0,
-      // modified_at: getCurrentTimestamp(),
-      // modified_by: 0,
-    });
-
-    // const result = await bcrypt.compare(data.password,hash);
-    
-    // const jwtData=jwt.sign(data,jwt_secret);
-    // console.log(jwtData);
-
-
-    // const token = jwt.sign({email:result.email, id:result._id},SECRET_KEY);
-    // res.send(201).json({user:result, token:token});
-    
-    result.data = qData;
-    
-  } catch (e) {
+      const qData = await AdminUserModel.checkUserbyEmail(email)
+      console.log('q',qData.length);
+      if (qData.length == 0) {
+      const userData = await AdminUserModel.create({
+        name: data.name,
+        email: data.email,
+        password: await bcrypt.hash(data.password, 8),
+        designation: data.designation,
+        is_super_admin: data.is_super_admin,
+        status: dataStatusValue.ACTIVE,
+        created_at: getCurrentTimestamp(),
+        created_by: 0,
+      });
+    //   result.success = 1;
+      result.data = userData;
+    } else {
+     
+      result.error = true;
+      result.msg = 'use another email'
+    }
+  } catch (error) {
     result.error = true;
-    result.status = statusCodes.SERVER_ERROR;
-    result.message = e.message;
   }
+
+  // try {
+  //   const qData = await AdminUserModel.create({
+  //     name: data.name,
+  //     email: data.email,
+  //     password: await bcrypt.hash(data.password,8),
+  //     designation: data.designation,
+  //     is_super_admin: data.is_super_admin,
+  //     status: dataStatusValue.ACTIVE,
+  //     created_at: getCurrentTimestamp(),
+  //     created_by: 0,
+  //   });
+  //   result.data = qData;
+
+  // } catch (e) {
+  //   result.error = true;
+  //   result.status = statusCodes.SERVER_ERROR;
+  //   result.message = e.message;
+  // }
   return result;
 
 };
-
-
 
 const viewById = async (data, params, info) => {
   const result = {
@@ -204,8 +205,8 @@ const update = async (data, params) => {
     if (qData) {
 
       const saveData = await AdminUserModel.update(id, {
-        name:data.name,
-        email:data.email,
+        name: data.name,
+        email: data.email,
         // password:data.password,
         designation: data.designation,
         is_super_admin: data.is_super_admin,
@@ -269,31 +270,31 @@ const loginUser = async (data) => {
   //   result.message = `${errorMessages.BAD_REQUEST} ${validationError}`;
   //   return result;
   // }
-//   try{
-//     const qData = await userModel.checkbyName(data.name);
-//     if (qData){
-//       const validName = await (data.name,qData.name);
-//       if(validName){
-//         const displayName = `${qData.name} ${qData.contact}`;
-//         result.data.displayName = displayName;
-//       }else {
-//         result.error = true;
-//         result.status = statusCodes.BAD_REQUEST;
-//         result.message = 'Invalid credentials.';
-//       }  
-//     } else {
-//       result.error = true;
-//       result.status = statusCodes.BAD_REQUEST;
-//       result.message = 'Invalid credentials.';
-//     }
-//   } catch (e) {
-//     result.error = true;
-//     result.status = statusCodes.SERVER_ERROR;
-//     result.message = e.message;
-//   }
+  //   try{
+  //     const qData = await userModel.checkbyName(data.name);
+  //     if (qData){
+  //       const validName = await (data.name,qData.name);
+  //       if(validName){
+  //         const displayName = `${qData.name} ${qData.contact}`;
+  //         result.data.displayName = displayName;
+  //       }else {
+  //         result.error = true;
+  //         result.status = statusCodes.BAD_REQUEST;
+  //         result.message = 'Invalid credentials.';
+  //       }  
+  //     } else {
+  //       result.error = true;
+  //       result.status = statusCodes.BAD_REQUEST;
+  //       result.message = 'Invalid credentials.';
+  //     }
+  //   } catch (e) {
+  //     result.error = true;
+  //     result.status = statusCodes.SERVER_ERROR;
+  //     result.message = e.message;
+  //   }
 
-//   return result;
-// };
+  //   return result;
+  // };
 
   // Check if user exists
   try {
@@ -303,12 +304,12 @@ const loginUser = async (data) => {
       if (validPass) {
         const displayName = `${qData.name}`;
         result.data.token = loginToken(qData.id, displayName);
-        result.data.displayName = displayName;   
+        result.data.displayName = displayName;
       } else {
         result.error = true;
         result.status = statusCodes.BAD_REQUEST;
         result.message = 'Invalid credentials.';
-      }  
+      }
     } else {
       result.error = true;
       result.status = statusCodes.BAD_REQUEST;
@@ -327,12 +328,12 @@ const loginUser = async (data) => {
 
 
 module.exports = {
-getListMapStateData,
-getListMapCityData,
-loginUser,
-getAdminUserList,
-create,
-viewById,
-update,
-deleteById,
+  getListMapStateData,
+  getListMapCityData,
+  loginUser,
+  getAdminUserList,
+  create,
+  viewById,
+  update,
+  deleteById,
 };
