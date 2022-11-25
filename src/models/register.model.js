@@ -66,7 +66,7 @@ const fetchAll = async (data) => {
     totalRows: '',
   };
 
-  const params = [dataStatusValue.DELETED];
+  const params = [dataStatusValue.DELETED,dataStatusValue.DELETED,dataStatusValue.DELETED];
   const resultData = await dbConnection.query(query, params);
   qData['data'] = resultData || [];
   return qData;
