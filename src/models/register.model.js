@@ -56,15 +56,18 @@ const fetchAllMapCitydata = async (state_id,data) => {
 // };
 
 const fetchAll = async (data) => {
-  const query = `SELECT id, legal_name, state, city, contact_no FROM restaurant INNER JOIN states ON restaurant.states = states.states_id 
-  WHERE status != ?`
+  const query = `select r.id , r.legal_name, r.contact_no, c.city as city, s.name as state
+                    from restaurant r
+                    join cities c on r.city = c.id and c.status != ?
+                    join states s on r.state = s.id and s.status != ?
+                where r.status != ?;`
   const qData = {
     data: [],
     totalRows: '',
   };
-  
-  const countParams = [dataStatusValue.DELETED];
-  const resultData = await dbConnection.query(query, countParams);
+
+  const params = [dataStatusValue.DELETED];
+  const resultData = await dbConnection.query(query, params);
   qData['data'] = resultData || [];
   return qData;
 };

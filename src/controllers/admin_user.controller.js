@@ -1,6 +1,7 @@
 const httpError = require('../utils/httpError.util');
 const { statusCodes, requestHeaders } = require('../config/const.config');
 const AdminUserService = require('../services/admin_user.service');
+const { getLoggedInUser, getTokenData, userData } = require('../utils/jwtToken.util');
 
 
 // const login = async (req, res, next) => {
@@ -66,20 +67,24 @@ const list = async (req, res, next) => {
       }
 };
 
+
 const create = async (req, res, next) => {
   try {
-    const { body,params} = req;
+    console.log(JSON.parse(req.headers));
+    const tokenData = await userData(req.headers.auth-token.tostring())
+    console.log(tokenData);
+  const { body,params} = req;
   const result = await AdminUserService.create(body, params);
-    
     if (result.error) {
-      next(httpError(result.message, result.status));
+      res.json({message:result.msg, error: result.error})
     } else {
       res.json({ success: true });
     }
   } catch (e) {
-    next(httpError(e.message, statusCodes.SERVER_ERROR));
+    res.json({error:true, message: e})
   }
 };
+
 
 const viewById = async (req, res, next) => {
     try {

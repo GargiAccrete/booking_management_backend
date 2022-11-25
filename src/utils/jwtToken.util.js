@@ -3,16 +3,21 @@ const jwt = require('jsonwebtoken');
 
 dotenv.config();
 
-const loginToken = (userId, userName) => {
+const loginToken = (userId, userEmail) => {
   const options = {
     expiresIn: '86400s',
   };
   const data = {
     userId,
-    userName
+    userEmail
   };
   return jwt.sign(data, process.env.SECRET_JWT, options);
 };
+
+const userData = async (token) => {
+  let data = await jwt.verify(token, process.env.SECRET_JWT)
+  return data 
+}
 
 // Generate jwt token
 const signToken = (userId, userDisplayName, user_type) => {
@@ -67,5 +72,6 @@ module.exports = {
   getLoggedInUser,
   getLoggedInUserPolicyId,
   getTokenData,
-  getUserType
+  getUserType,
+  userData
 };
