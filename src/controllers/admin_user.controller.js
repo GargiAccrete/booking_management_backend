@@ -52,7 +52,7 @@ const listCity = async (req, res, next) => {
 
 const list = async (req, res, next) => {
     try {
-     
+ 
         const { body} = req;
        
         const result = await AdminUserService.getAdminUserList(body);
@@ -69,10 +69,11 @@ const list = async (req, res, next) => {
 
 
 const create = async (req, res, next) => {
+  console.log('aaaaaaaaaaaaaaaaaaaaaaaaa');
   try {
-    console.log(JSON.parse(req.headers));
-    const tokenData = await userData(req.headers.auth-token.tostring())
-    console.log(tokenData);
+    // console.log(JSON.parse(req.headers));
+    // const tokenData = await userData(req.headers.auth-token.tostring())
+    // console.log(tokenData);
   const { body,params} = req;
   const result = await AdminUserService.create(body, params);
     if (result.error) {

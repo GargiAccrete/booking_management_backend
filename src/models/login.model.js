@@ -34,11 +34,12 @@ const checkUserbyId = async (id) => {
 
 const checkUserbyEmail = async (email) => {
   const query = `SELECT 
-                  id, Email AS email, password
+                  id, email, password
                 FROM ${tableName} 
                 WHERE email = ? AND status != ?`;
   const params = [email, dataStatusValue.DELETED];
   const qData = await dbConnection.query(query, params);
+  console.log(qData);
   return qData || null;
 };
 

@@ -1,3 +1,4 @@
+
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
@@ -21,7 +22,7 @@ const app = express();
 dotenv.config();
 
 // Set server port
-const port = Number(process.env.PORT || 3002);
+const port =  3002;
 // Common middlewares
 app.use(express.urlencoded({limit: '10mb', extended: true}));
 app.use(express.json());
@@ -38,7 +39,7 @@ app.use('/auth', authRoutes);
 app.use('/categories', categoryRoutes);
 // app.use('/dashboard', dashboardRoutes );
 
-app.use('/login', loginRoutes);
+app.use('/loginUser', loginRoutes);
 app.use('/register', registerRoutes);
 app.use('/adminUser', adminUserRoutes);
 

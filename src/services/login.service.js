@@ -12,19 +12,18 @@ const login = async (data, params) => {
 	};
 	const { email , password } = data
 	try {
-		const qData = await loginModel.checkUserbyEmail(email)
+    const qData = await loginModel.checkUserbyEmail(email)
 		let isMatch = await bcrypt.compare(password,qData[0].password)
 		if(isMatch){
 			result.success = 1;
       let token = await loginToken(qData[0].id,qData[0].email)
-      console.log(token);
       result.token = token
 		} else{
 			result.error = true;
 			result.msg = 'Invalid user name or password'
 		}
 	} catch (error) {
-		result.error = true;
+    result.error = true;
 	}
 	return result;
   };

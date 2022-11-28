@@ -6,9 +6,11 @@ const loginService = require('../services/login.service');
 
 
 const login = async (req, res, next) => {
+
   try {
   const { body,params} = req;
   const result = await loginService.login(body, params);
+  console.log('daaaaaaaaaaaaaaaaaaaaaaaa',result);
     if (result.error) {
       res.json({message:result.msg, error: result.error})
       // next(httpError(result.message, result.status));
