@@ -34,7 +34,7 @@ const checkUserbyId = async (id) => {
 
 const checkUserbyEmail = async (email) => {
   const query = `SELECT 
-                  id, Email AS email, password
+                  id, Email AS email, password,name
                 FROM ${tableName} 
                 WHERE email = ? AND status != ?`;
   const params = [email, dataStatusValue.DELETED];

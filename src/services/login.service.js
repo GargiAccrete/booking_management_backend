@@ -16,7 +16,7 @@ const login = async (data, params) => {
 		let isMatch = await bcrypt.compare(password,qData[0].password)
 		if(isMatch){
 			result.success = 1;
-      let token = await loginToken(qData[0].id,qData[0].email)
+      let token = await loginToken(qData[0].id,qData[0].email,qData[0].name)
       console.log(token);
       result.token = token
 		} else{

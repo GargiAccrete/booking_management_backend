@@ -10,8 +10,8 @@ const fetchAllMapStatedata = async (data) => {
     totalRows: '',
   };
 
-  const countParams = [dataStatusValue.DELETED];
-  const resultData = await dbConnection.query(query,countParams);
+  const params = [dataStatusValue.DELETED];
+  const resultData = await dbConnection.query(query,params);
   qData['data'] = resultData || [];
   return qData;
 };
@@ -22,38 +22,12 @@ const fetchAllMapCitydata = async (state_id,data) => {
     data: [],
     totalRows: '',
   };
-  const countParams = [state_id,dataStatusValue.DELETED];
-  const resultData = await dbConnection.query(query,countParams);
+  const params = [state_id,dataStatusValue.DELETED];
+  const resultData = await dbConnection.query(query,params);
   qData['data'] = resultData || [];
   return qData;
 };
 
-// const fetchAll = async (page,info) => {
-//   const { search, desc, price, location } = info.queryData;
-   
-//     let condition = "";
-
-//     if(search){
-//       condition = ` AND restaurant.city LIKE '%${search}%' `;
-//   }if(desc){
-//       condition = ` ${condition} AND restaurant.description LIKE '%${desc}%' `;
-//   }if(price){
-//       condition = ` ${condition} AND restaurant.price = ${price} `;
-//   }if(location){
-//       condition = ` ${condition} AND restaurant.location_id = ${location} `;
-//   }
-//   const query = `SELECT * FROM ${tableName} 
-//   WHERE status != ? ${condition} `
-//   const qData = {
-//     data: [],
-//     totalRows: '',
-//   };
-//   const countParams = [dataStatusValue.DELETED];
-//   const resultData = await dbConnection.query(query,countParams);
-//   console.log("resultData",resultData)
-//   qData['data'] = resultData || [];
-//   return qData;
-// };
 
 const fetchAll = async (data) => {
   const query = `select r.id , r.legal_name, r.contact_no, c.city as city, s.name as state
@@ -66,7 +40,7 @@ const fetchAll = async (data) => {
     totalRows: '',
   };
 
-  const params = [dataStatusValue.DELETED];
+  const params = [dataStatusValue.DELETED,dataStatusValue.DELETED,dataStatusValue.DELETED];
   const resultData = await dbConnection.query(query, params);
   qData['data'] = resultData || [];
   return qData;

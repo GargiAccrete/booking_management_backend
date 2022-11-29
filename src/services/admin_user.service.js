@@ -105,15 +105,15 @@ const getAdminUserList = async (data, info) => {
   return result;
 };
 
-const create = async (data, params) => {
+const create = async (data, params,info) => {
   const result = {
     error: false,
     data: {},
   };
   const { email, password } = data;
+  const {userId} = info;
   try {
       const qData = await AdminUserModel.checkUserbyEmail(email)
-      console.log('q',qData.length);
       if (qData.length == 0) {
       const userData = await AdminUserModel.create({
         name: data.name,
@@ -123,7 +123,7 @@ const create = async (data, params) => {
         is_super_admin: data.is_super_admin,
         status: dataStatusValue.ACTIVE,
         created_at: getCurrentTimestamp(),
-        created_by: 0,
+        created_by: userId,
       });
     //   result.success = 1;
       result.data = userData;
@@ -136,24 +136,6 @@ const create = async (data, params) => {
     result.error = true;
   }
 
-  // try {
-  //   const qData = await AdminUserModel.create({
-  //     name: data.name,
-  //     email: data.email,
-  //     password: await bcrypt.hash(data.password,8),
-  //     designation: data.designation,
-  //     is_super_admin: data.is_super_admin,
-  //     status: dataStatusValue.ACTIVE,
-  //     created_at: getCurrentTimestamp(),
-  //     created_by: 0,
-  //   });
-  //   result.data = qData;
-
-  // } catch (e) {
-  //   result.error = true;
-  //   result.status = statusCodes.SERVER_ERROR;
-  //   result.message = e.message;
-  // }
   return result;
 
 };
@@ -163,7 +145,8 @@ const viewById = async (data, params, info) => {
     error: false,
     data: {},
   };
-  const id = Number(params.id) || 0;
+  const id = Number(params.id);
+  const {userId} = info;
   // Get data
   try {
     const qData = await AdminUserModel.viewById(id);
@@ -184,26 +167,19 @@ const viewById = async (data, params, info) => {
   return result;
 };
 
-const update = async (data, params) => {
+const update = async (data, params, info) => {
   const result = {
     error: false,
     data: {},
   };
-  const id = Number(params.id) || 0;
-  //Validate request
-  //const validationError = validateRegisterUpdate(data);
-  // if (validationError) {
-  //   result.error = true;
-  //   result.status = statusCodes.BAD_REQUEST;
-  //   result.message = `${errorMessages.BAD_REQUEST} ${validationError}`;
-  //   return result;
-  // }
-
+  const {userId} = info;
+  const id = Number(params.id);
+  console.log(id);
   //   // Save data
   try {
     const qData = await AdminUserModel.viewById(id);
+    console.log(qData);
     if (qData) {
-
       const saveData = await AdminUserModel.update(id, {
         name: data.name,
         email: data.email,
@@ -211,7 +187,7 @@ const update = async (data, params) => {
         designation: data.designation,
         is_super_admin: data.is_super_admin,
         modified_at: getCurrentTimestamp(),
-        modified_by: 0,
+        modified_by: userId,
       });
       result.data = saveData;
     } else {
@@ -224,23 +200,23 @@ const update = async (data, params) => {
     result.status = statusCodes.SERVER_ERROR;
     result.message = e.message;
   }
-
   return result;
 };
 
-const deleteById = async (data, params) => {
+const deleteById = async (data, params,info) => {
   const result = {
     error: false,
     data: {},
   };
   const id = Number(params.id);
+  const {userId} = info;
   // Save data
   try {
     const qData = await AdminUserModel.viewById(id);
     if (qData) {
       const saveData = await AdminUserModel.deleteById(id, {
         modified_at: getCurrentTimestamp(),
-        modified_by: id,
+        modified_by: userId,
       });
       result.data = saveData;
     } else {
@@ -262,39 +238,6 @@ const loginUser = async (data) => {
     data: {},
   };
 
-  // Validate request
-  // const validationError = validateLogin(data);
-  // if (validationError) {
-  //   result.error = true;
-  //   result.status = statusCodes.BAD_REQUEST;
-  //   result.message = `${errorMessages.BAD_REQUEST} ${validationError}`;
-  //   return result;
-  // }
-  //   try{
-  //     const qData = await userModel.checkbyName(data.name);
-  //     if (qData){
-  //       const validName = await (data.name,qData.name);
-  //       if(validName){
-  //         const displayName = `${qData.name} ${qData.contact}`;
-  //         result.data.displayName = displayName;
-  //       }else {
-  //         result.error = true;
-  //         result.status = statusCodes.BAD_REQUEST;
-  //         result.message = 'Invalid credentials.';
-  //       }  
-  //     } else {
-  //       result.error = true;
-  //       result.status = statusCodes.BAD_REQUEST;
-  //       result.message = 'Invalid credentials.';
-  //     }
-  //   } catch (e) {
-  //     result.error = true;
-  //     result.status = statusCodes.SERVER_ERROR;
-  //     result.message = e.message;
-  //   }
-
-  //   return result;
-  // };
 
   // Check if user exists
   try {
@@ -323,9 +266,6 @@ const loginUser = async (data) => {
 
   return result;
 };
-
-
-
 
 module.exports = {
   getListMapStateData,

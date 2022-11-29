@@ -1,7 +1,6 @@
 // Creates error with message and http status code
 const httpError = (e, statusCode) => {
   let error = null;
-
   if (typeof e === 'string') {
     error = new Error(e);
   } else if (e.message) {

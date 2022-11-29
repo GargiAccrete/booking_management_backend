@@ -9,9 +9,8 @@ const fetchAllMapStatedata = async (data) => {
     data: [],
     totalRows: '',
   };
-
-  const countParams = [dataStatusValue.DELETED];
-  const resultData = await dbConnection.query(query,countParams);
+  const params = [dataStatusValue.DELETED];
+  const resultData = await dbConnection.query(query,params);
   qData['data'] = resultData || [];
   return qData;
 };
@@ -23,8 +22,8 @@ const fetchAllMapCitydata = async (state_id,data) => {
     totalRows: '',
   };
   
-  const countParams = [state_id,dataStatusValue.DELETED];
-  const resultData = await dbConnection.query(query,countParams);
+  const params = [state_id,dataStatusValue.DELETED];
+  const resultData = await dbConnection.query(query,params);
   qData['data'] = resultData || [];
   return qData;
 };
@@ -37,8 +36,8 @@ const fetchAlladminUser = async (data) => {
     data: [],
     totalRows: '',
   };
-  const countParams = [dataStatusValue.DELETED];
-  const resultData = await dbConnection.query(query, countParams);
+  const params = [dataStatusValue.DELETED];
+  const resultData = await dbConnection.query(query, params);
   qData['data'] = resultData || [];
   return qData;
 };
@@ -80,6 +79,7 @@ const viewById = async (id) =>{
 
     const query = `SELECT id,name,email,password,designation,is_super_admin,status,created_at,created_by,modified_at,modified_by FROM ${tableName} WHERE id = ? AND status != ?`;
     const params = [id, dataStatusValue.DELETED]
+    console.log(query,params);
     const qData = await dbConnection.query(query, params);
     return qData[0] || null;
 }
