@@ -35,10 +35,10 @@ const listCity = async (req, res, next) => {
 
 const list = async (req, res, next) => {
     try {
-      // let authToken = req.headers['auth-token']
-      // const info = await userData(authToken)
+      let authToken = req.headers['auth-token']
+      const info = await userData(authToken)
         const { body,params} = req;
-        const result = await registerService.getList(body);
+        const result = await registerService.getList(body,params,info);
         if (result.error) {
           next(httpError(result.message, result.status));
         } else {
@@ -73,7 +73,6 @@ const viewById = async (req, res, next) => {
         const { body, params } = req;
      
         const result = await registerService.viewById(body, params,info);
-    
         if (result.error) {
           next(httpError(result.message, result.status));
         } else {
@@ -82,7 +81,6 @@ const viewById = async (req, res, next) => {
       } catch (e) {
         next(httpError(e.message, statusCodes.SERVER_ERROR));
       }
-    
 };
 const update = async (req, res, next) => {
     try {

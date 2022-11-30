@@ -59,7 +59,7 @@ const getListMapCityData = async (data,params) => {
 };
 
 
-const getList = async (data, info) => {
+const getList = async (data,params, info) => {
     const result = {
       error: false,
       data: {},

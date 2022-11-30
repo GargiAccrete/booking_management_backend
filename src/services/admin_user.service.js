@@ -69,8 +69,7 @@ const getListMapCityData = async (data, params) => {
 };
 
 
-
-const getAdminUserList = async (data, info) => {
+const getAdminUserList = async (data,params, info) => {
   const result = {
     error: false,
     data: {},
@@ -237,7 +236,6 @@ const loginUser = async (data) => {
     error: false,
     data: {},
   };
-
 
   // Check if user exists
   try {
