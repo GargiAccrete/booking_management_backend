@@ -32,8 +32,8 @@ const fetchAllMapCitydata = async (state_id,data) => {
 const fetchAll = async (data) => {
   const query = `select r.id , r.legal_name, r.contact_no, c.city as city, s.name as state
                     from restaurant r
-                    join cities c on r.city = c.id and c.status != ?
-                    join states s on r.state = s.id and s.status != ?
+                    left join cities c on r.city = c.id and c.status != ?
+                    left join states s on r.state = s.id and s.status != ?
                 where r.status != ?;`
   const qData = {
     data: [],
