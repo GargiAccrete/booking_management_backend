@@ -6,10 +6,10 @@ const { getLoggedInUser, getTokenData, userData } = require('../utils/jwtToken.u
 
 const list = async (req, res, next) => {
   try {
-    let authToken = req.headers['auth-token']
-    const info = await userData(authToken)
+    // let authToken = req.headers['auth-token']
+    // const info = await userData(authToken)
     const { body,params } = req;
-    const result = await barndService.getList(body,params,info);
+    const result = await barndService.getList(body);
 
     if (result.error) {
       next(httpError(result.message, result.status));
@@ -23,8 +23,8 @@ const list = async (req, res, next) => {
 
 const create = async (req, res, next) => {
   try {
-    let authToken = req.headers['auth-token']
-    const info = await userData(authToken)
+    // let authToken = req.headers['auth-token']
+    // const info = await userData(authToken)
     const { body, params } = req;
     const result = await barndService.create(body, params,info);
     if (result.error) {
