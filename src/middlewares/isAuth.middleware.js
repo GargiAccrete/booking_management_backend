@@ -15,7 +15,6 @@ const isAuth = (req, res, next) => {
       next(httpError(message, statusCodes.UNAUTHORISED));
       return;
     }
-  
     next();
   };
   

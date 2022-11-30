@@ -8,7 +8,6 @@ const listMapStateData = async (req, res, next) => {
   try {
     const { body, params } = req;
     const result = await AdminUserService.getListMapStateData(body, params);
-
     if (result.error) {
       next(httpError(result.message, result.status));
     } else {
@@ -23,7 +22,6 @@ const listCity = async (req, res, next) => {
   try {
     const { body, params } = req;
     const result = await AdminUserService.getListMapCityData(body, params);
-
     if (result.error) {
       next(httpError(result.message, result.status));
     } else {
@@ -34,13 +32,12 @@ const listCity = async (req, res, next) => {
   }
 };
 
-
 const list = async (req, res, next) => {
   try {
-    let authToken = req.headers['auth-token']
-    const info = await userData(authToken)
-    const { body, params } = req;
-    const result = await AdminUserService.getAdminUserList(body, params, info);
+    // let authToken = req.headers['auth-token']
+    // const info = await userData(authToken)
+    const { body } = req;
+    const result = await AdminUserService.getAdminUserList(body);
 
     if (result.error) {
       next(httpError(result.message, result.status));
@@ -75,7 +72,6 @@ const viewById = async (req, res, next) => {
     const info = await userData(authToken)
     const { body, params } = req;
     const result = await AdminUserService.viewById(body, params, info);
-
     if (result.error) {
       next(httpError(result.message, result.status));
     } else {
@@ -84,7 +80,6 @@ const viewById = async (req, res, next) => {
   } catch (e) {
     next(httpError(e.message, statusCodes.SERVER_ERROR));
   }
-
 };
 
 const update = async (req, res, next) => {
@@ -95,7 +90,6 @@ const update = async (req, res, next) => {
     const result = await AdminUserService.update(body, params, info);
     if (result.error) {
       res.json({ error: true })
-
     } else {
       res.json({ success: true });
     }

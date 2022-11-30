@@ -59,7 +59,7 @@ const getListMapCityData = async (data,params) => {
 };
 
 
-const getList = async (data, params, info) => {
+const getList = async (data, info) => {
     const result = {
       error: false,
       data: {},
@@ -90,7 +90,7 @@ const getList = async (data, params, info) => {
   return result;
 };
 
-const create = async (data, params) => {
+const create = async (data, params,info) => {
   
   const result = {
     error: false,
@@ -103,6 +103,7 @@ const create = async (data, params) => {
   //   result.message = `${errorMessages.BAD_REQUEST} ${validationError}`;
   //   return result;
   // }
+  const {userId} = info;
   try {
     const qData = await registerModel.create({
       business_type: data.business_type,
@@ -117,7 +118,7 @@ const create = async (data, params) => {
       contact_no: data.contact_no,
       status: dataStatusValue.ACTIVE,
       created_at: getCurrentTimestamp(),
-      created_by: 0,
+      created_by: userId,
       // modified_at: getCurrentTimestamp(),
       // modified_by: 0,
     });
@@ -137,6 +138,7 @@ const viewById = async (data, params, info) => {
     data: {},
   };
   const id = Number(params.id) ;
+  const {userId} = info;
   // Get data
   try {
     const qData = await registerModel.viewById(id);
@@ -162,6 +164,7 @@ const update = async (data, params) => {
     error: false,
     data: {},
   };
+  const {userId} = info;
   const id = Number(params.id);
   //Validate request
   // const validationError = validateRegisterUpdate(data);
@@ -188,7 +191,7 @@ const update = async (data, params) => {
         business_area: data.business_area,
         contact_no: data.contact_no,
         modified_at: getCurrentTimestamp(),
-        modified_by: 0,
+        modified_by: userId,
       });
       result.data = saveData;
     } else {
@@ -205,12 +208,13 @@ const update = async (data, params) => {
   return result;
 };
 
-const deleteById = async (data, params) => {
+const deleteById = async (data, params, info) => {
   const result = {
     error: false,
     data: {},
   };
-  const id = Number(params.id) || 0;
+  const id = Number(params.id);
+  const {userId} = info;
 
   // Save data
   try {

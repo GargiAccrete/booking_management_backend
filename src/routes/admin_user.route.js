@@ -12,5 +12,4 @@ router.put('/:id/update',AdminUserController.update);
 router.get('/:id/delete',AdminUserController.deleteById);
 
 
-
 module.exports = router;
