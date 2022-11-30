@@ -39,7 +39,7 @@ app.use('/auth', authRoutes);
 app.use('/categories', categoryRoutes);
 // app.use('/dashboard', dashboardRoutes );
 
-app.use('/loginUser', loginRoutes);
+app.use('/login', loginRoutes);
 app.use('/register', registerRoutes);
 app.use('/adminUser', adminUserRoutes);
 
