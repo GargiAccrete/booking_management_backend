@@ -35,10 +35,10 @@ const listCity = async (req, res, next) => {
 
 const list = async (req, res, next) => {
     try {
-      let authToken = req.headers['auth-token']
-      const info = await userData(authToken)
+      // let authToken = req.headers['auth-token']
+      // const info = await userData(authToken)
         const { body,params} = req;
-        const result = await registerService.getList(body,params,info);
+        const result = await registerService.getList(body);
         if (result.error) {
           next(httpError(result.message, result.status));
         } else {

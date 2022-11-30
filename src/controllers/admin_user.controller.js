@@ -34,10 +34,10 @@ const listCity = async (req, res, next) => {
 
 const list = async (req, res, next) => {
   try {
-    let authToken = req.headers['auth-token']
-    const info = await userData(authToken)
+    // let authToken = req.headers['auth-token']
+    // const info = await userData(authToken)
     const { body,params } = req;
-    const result = await AdminUserService.getAdminUserList(body,params, info);
+    const result = await AdminUserService.getAdminUserList(body);
 
     if (result.error) {
       next(httpError(result.message, result.status));
