@@ -23,6 +23,14 @@ const login = async (req, res, next) => {
   }
 };
 
+const logout = async (req, res, next) => {
+  try {
+    res.json({ success: true });
+  } catch (e) {
+    next(httpError(e.message, statusCodes.SERVER_ERROR));
+  }
+};
+
 const loginlist = async (req, res, next) => {
   try {
       const { body} = req;
@@ -39,5 +47,6 @@ const loginlist = async (req, res, next) => {
 
 module.exports = {
   login,
+  logout,
   loginlist
 };

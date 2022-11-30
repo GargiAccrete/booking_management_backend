@@ -1,6 +1,7 @@
 const httpError = require('../utils/httpError.util');
 const { statusCodes, requestHeaders } = require('../config/const.config');
 const registerService = require('../services/register.service');
+const { getLoggedInUser, getTokenData, userData } = require('../utils/jwtToken.util');
 
 const listMapStateData = async (req, res, next) => {
   try {
@@ -32,11 +33,12 @@ const listCity = async (req, res, next) => {
     }
 };
 
-
 const list = async (req, res, next) => {
     try {
-        const { body} = req;
-        const result = await registerService.getList(body);
+      let authToken = req.headers['auth-token']
+      const info = await userData(authToken)
+        const { body,params} = req;
+        const result = await registerService.getList(body,params,info);
         if (result.error) {
           next(httpError(result.message, result.status));
         } else {
@@ -49,8 +51,10 @@ const list = async (req, res, next) => {
 
 const create = async (req, res, next) => {
   try {
+    let authToken = req.headers['auth-token']
+    const info = await userData(authToken)
     const { body,params} = req;
-  const result = await registerService.create(body, params);
+  const result = await registerService.create(body, params, info);
     
     if (result.error) {
       next(httpError(result.message, result.status));
@@ -64,11 +68,11 @@ const create = async (req, res, next) => {
 
 const viewById = async (req, res, next) => {
     try {
-       
+      let authToken = req.headers['auth-token']
+      const info = await userData(authToken)
         const { body, params } = req;
      
-        const result = await registerService.viewById(body, params);
-    
+        const result = await registerService.viewById(body, params,info);
         if (result.error) {
           next(httpError(result.message, result.status));
         } else {
@@ -77,13 +81,14 @@ const viewById = async (req, res, next) => {
       } catch (e) {
         next(httpError(e.message, statusCodes.SERVER_ERROR));
       }
-    
 };
 const update = async (req, res, next) => {
     try {
+      let authToken = req.headers['auth-token']
+      const info = await userData(authToken)
         const { body, params } = req;
        
-        const result = await registerService.update(body, params);
+        const result = await registerService.update(body, params, info);
     
         if (result.error) {
           res.json({error:true})
@@ -101,9 +106,11 @@ const update = async (req, res, next) => {
 
 const deleteById = async (req, res, next) => {
   try {
+    let authToken = req.headers['auth-token']
+    const info = await userData(authToken)
     const { body, params } = req;
     
-    const result = await registerService.deleteById(body, params);
+    const result = await registerService.deleteById(body, params, info);
 
         if (result.error) {
           next(httpError(result.message, result.status));

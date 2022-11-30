@@ -8,6 +8,7 @@ const authRoutes = require('./routes/auth.route');
 // const dashboardRoutes = require('./routes/dashboard.route');
 const loginRoutes = require('./routes/login.route');
 const adminUserRoutes = require('./routes/admin_user.route');
+const brandRoutes = require('./routes/brand.route');
 const registerRoutes=require('./routes/register.route');
 // const adminRoutes=require('./routes/admin_user.route');
 const categoryRoutes = require('./routes/categories.route');
@@ -42,6 +43,7 @@ app.use('/categories', categoryRoutes);
 app.use('/login', loginRoutes);
 app.use('/register', registerRoutes);
 app.use('/adminUser', adminUserRoutes);
+app.use('/brand', brandRoutes);
 
 // app.use('/admin', adminRoutes);
 

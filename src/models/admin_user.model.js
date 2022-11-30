@@ -4,41 +4,40 @@ const { dataStatusValue, pageConfig, user_type, statusCodes } = require('../conf
 const tableName = 'admin_user';
 
 const fetchAllMapStatedata = async (data) => {
-  const query = `SELECT  id,name FROM states WHERE status!=?`
+  const query = `SELECT  id, name FROM states WHERE status!= ?`
   const qData = {
     data: [],
     totalRows: '',
   };
-
-  const countParams = [dataStatusValue.DELETED];
-  const resultData = await dbConnection.query(query,countParams);
+  const params = [dataStatusValue.DELETED];
+  const resultData = await dbConnection.query(query,params);
   qData['data'] = resultData || [];
   return qData;
 };
 
 const fetchAllMapCitydata = async (state_id,data) => {
-  const query = `SELECT id,city,state_id FROM cities WHERE state_id=? AND status!=?`
+  const query = `SELECT id, city, state_id FROM cities WHERE state_id=? AND status!= ?`
   const qData = {
     data: [],
     totalRows: '',
   };
   
-  const countParams = [state_id,dataStatusValue.DELETED];
-  const resultData = await dbConnection.query(query,countParams);
+  const params = [state_id,dataStatusValue.DELETED];
+  const resultData = await dbConnection.query(query,params);
   qData['data'] = resultData || [];
   return qData;
 };
 
 
 const fetchAlladminUser = async (data) => {
-  const query = `SELECT id,name,email,password,designation,is_super_admin,status,created_at,created_by,modified_at,modified_by FROM ${tableName} 
+  const query = `SELECT id, name, email, password, designation, is_super_admin, status, created_at, created_by, modified_at, modified_by FROM ${tableName} 
   WHERE status != ?`
   const qData = {
     data: [],
     totalRows: '',
   };
-  const countParams = [dataStatusValue.DELETED];
-  const resultData = await dbConnection.query(query, countParams);
+  const params = [dataStatusValue.DELETED,dataStatusValue.DELETED,dataStatusValue.DELETED];
+  const resultData = await dbConnection.query(query, params);
   qData['data'] = resultData || [];
   return qData;
 };
@@ -78,12 +77,12 @@ const create = async (data) => {
 
 const viewById = async (id) =>{
 
-    const query = `SELECT id,name,email,password,designation,is_super_admin,status,created_at,created_by,modified_at,modified_by FROM ${tableName} WHERE id = ? AND status != ?`;
+    const query = `SELECT id, name, email, password, designation, is_super_admin, status, created_at, created_by, modified_at, modified_by FROM ${tableName} WHERE id = ? AND status != ?`;
     const params = [id, dataStatusValue.DELETED]
+    console.log(query,params);
     const qData = await dbConnection.query(query, params);
     return qData[0] || null;
 }
-
 
 const update = async (id, data) => {
     const query = `UPDATE ${tableName} SET 

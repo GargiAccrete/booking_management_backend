@@ -5,8 +5,7 @@ const router = express.Router();
 
 
 router.post('/login',loginController.login);
-
-// router.get('/login',loginController.loginlist)
+router.get('/login',loginController.loginlist)
 
 
 module.exports = router;
